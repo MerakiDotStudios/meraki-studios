@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meraki Studios</title>
-    
-    <link rel="icon" href="icon.png" type="image/png">
-    
+
+    <link rel="icon" href="images/icon.png" type="image/png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         :root {
-            --primary-color: #ffffff; 
-            --bg-dark: #000000; 
+            --primary-color: #ffffff;
+            --bg-dark: #000000;
             --bg-card: rgba(16, 24, 28, 0.75);
             --text-color: #f0f0f0;
             --text-muted: #b0c4de;
@@ -42,7 +44,7 @@
         }
 
         #shape-grid {
-            position: absolute; 
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -56,18 +58,64 @@
             transition: fill 0.8s ease-out, filter 0.8s ease-out;
         }
 
-        h2, h3 {
+        h2,
+        h3 {
             font-family: 'Anton', sans-serif;
             letter-spacing: 1.5px;
-            font-weight: 400; 
+            font-weight: 400;
+        }
+
+        section {
+            padding: 80px 5%;
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3), 0 0 25px rgba(0, 0, 0, 0.8);
         }
 
         /* Animations */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
 
-        /* --- HEADER STYLE UPDATE --- */
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Header */
         header {
             position: fixed;
             top: 0;
@@ -83,18 +131,37 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .header-logo { height: 45px; width: auto; transition: transform 0.3s ease; }
-        .header-logo:hover { transform: scale(1.05); }
+        .header-logo {
+            height: 45px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
 
         nav {
             display: flex;
             align-items: center;
-            gap: 1rem; 
+            gap: 1rem;
         }
 
-        nav .nav-links a { color: var(--text-muted); text-decoration: none; margin: 0 1rem; font-weight: 400; font-size: 0.95rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        nav .nav-links a:hover, nav .nav-links a.active { color: var(--primary-color); text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
-        
+        nav .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        nav .nav-links a:hover,
+        nav .nav-links a.active {
+            color: var(--primary-color);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+
         .social-group {
             display: flex;
             align-items: center;
@@ -103,14 +170,30 @@
             border-left: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .social-group a { 
-            color: var(--text-muted); 
-            font-size: 1.2rem; 
-            transition: color 0.3s ease, transform 0.3s ease; 
-            display: inline-block; 
+        .social-group a {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
         }
-        .social-group a:hover { color: var(--primary-color); transform: scale(1.1); }
-       
+
+        .social-group a:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .mobile-nav-toggle i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
 
         /* Main Hero Section */
         #main {
@@ -121,12 +204,19 @@
             align-items: center;
             text-align: center;
             padding: 0 2rem;
-            position: relative;
         }
 
-        #main .logo-container { animation: float 6s ease-in-out infinite; }
-        #main .main-logo { width: 473px; max-width: 90%; margin-bottom: 2rem; filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.7)); }
-        
+        #main .logo-container {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        #main .main-logo {
+            width: 473px;
+            max-width: 90%;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.7));
+        }
+
         #main p {
             font-size: 1.3rem;
             font-weight: 300;
@@ -137,45 +227,196 @@
             animation: fadeInUp 1s ease-out 0.5s backwards;
         }
 
-        /* Projects Section */
-        #projects { padding: 80px 5%; position: relative; }
-
-        #projects h2 {
-            text-align: center;
-            font-size: 3.5rem;
+        /* Project & Team Controls */
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
             margin-bottom: 3rem;
+        }
+
+        .filter-buttons,
+        .layout-buttons {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-btn,
+        .layout-btn {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .layout-btn:hover {
             color: var(--primary-color);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3), 0 0 25px rgba(0,0,0,0.8);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-btn.active,
+        .layout-btn.active {
+            color: var(--bg-dark);
+            background-color: var(--primary-color);
+            text-shadow: none;
+        }
+
+        .layout-btn {
+            font-size: 1.1rem;
+        }
+
+        /* Projects Section */
+        #projects h2 {
+            margin-bottom: 1rem;
+        }
+
+        .projects-container {
+            display: grid;
+            gap: 3rem;
+            grid-template-columns: 1fr;
         }
 
         .project-card {
             display: flex;
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
             border-radius: 16px;
-            margin-bottom: 3rem;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            transition: transform 0.4s ease, opacity 0.5s ease, max-height 0.7s ease-out, padding 0.7s ease-out, margin 0.7s ease-out;
+            opacity: 1;
+            max-height: 1000px;
+            cursor: pointer;
+        }
+
+        .project-card.hide {
             opacity: 0;
+            max-height: 0;
+            transform: scale(0.95);
+            overflow: hidden;
+            margin: 0 !important;
+            padding: 0;
+            border: 0;
+            pointer-events: none;
         }
-        
-        .project-card.visible { animation: fadeInUp 1s forwards; }
-        .project-card:hover { 
-            transform: translateY(-12px); 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); 
-            border-color: rgba(255, 255, 255, 0.5);
+
+        .project-card.visible {
+            animation: fadeInUp 1s forwards;
         }
-        
-        .project-card:nth-child(odd) { flex-direction: row-reverse; }
 
-        .project-image { flex: 1 1 45%; min-height: 380px; background-size: cover; background-position: center; transition: transform 0.4s ease; }
-        .project-card:hover .project-image { transform: scale(1.05); }
+        .project-card:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
 
-        .project-content { flex: 1 1 55%; padding: 3.5rem; }
-        .project-content h3 { font-size: 2.8rem; margin-bottom: 1rem; text-transform: uppercase; }
-        .project-content p { color: var(--text-muted); line-height: 1.8; margin-bottom: 2rem; }
-        
+        .project-image {
+            flex: 1 1 45%;
+            min-height: 380px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.4s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-content {
+            flex: 1 1 55%;
+            padding: 3.5rem;
+        }
+
+        .project-content h3 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .project-content p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Grid View Styles */
+        .projects-container.grid-view {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .projects-container.grid-view .project-card,
+        .projects-container.grid-view .project-card:nth-child(odd) {
+            flex-direction: column;
+        }
+
+        .projects-container.grid-view .project-image {
+            min-height: 220px;
+            height: 220px;
+        }
+
+        .projects-container.grid-view .project-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .projects-container.grid-view .project-content h3 {
+            font-size: 1.8rem;
+        }
+
+        .projects-container.grid-view .project-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .projects-container.grid-view .project-btn {
+            align-self: flex-start;
+        }
+
+        /* Compact View for Projects */
+        .projects-container.compact-view {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .projects-container.compact-view .project-card,
+        .projects-container.compact-view .project-card:nth-child(odd) {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .projects-container.compact-view .project-image {
+            min-height: 180px;
+            height: 180px;
+        }
+
+        .projects-container.compact-view .project-content {
+            padding: 1.5rem;
+        }
+
+        .projects-container.compact-view .project-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .projects-container.compact-view .project-content p,
+        .projects-container.compact-view .project-content .project-btn {
+            display: none;
+        }
+
         .project-btn {
             display: inline-block;
             padding: 14px 28px;
@@ -187,299 +428,1088 @@
             text-transform: uppercase;
         }
 
-        #worldchatter { background: #2bf19b2e; border-color: #2bf19b; }
-        #worldchatter h3 { color: #2bf19b; }
-        #worldchatter .project-btn { background: #1fdf90; color: var(--bg-dark); }
-        #worldchatter .project-btn:hover { box-shadow: 0 0 20px -5px #1fdf90; }
+        #worldchatter {
+            background: #2bf19b2e;
+            border-color: #2bf19b;
+        }
 
-        #geminicraft { background: #8ab4f82e; border-color: #8ab4f8; }
-        #geminicraft h3 { color: #8ab4f8; }
-        #geminicraft .project-btn { background: #8ab4f8; color: var(--bg-dark); }
-        #geminicraft .project-btn:hover { box-shadow: 0 0 20px -5px #8ab4f8; }
+        #worldchatter h3 {
+            color: #2bf19b;
+        }
 
-        #pebbleantivpn { background: #f3742f2e; border-color: #f3732f; }
-        #pebbleantivpn h3 { color: #f3732f; }
-        #pebbleantivpn .project-btn { background: #f3732f; color: var(--text-color); }
-        #pebbleantivpn .project-btn:hover { box-shadow: 0 0 20px -5px #f3732f; }
+        #worldchatter .project-btn {
+            background: #1fdf90;
+            color: var(--bg-dark);
+        }
 
-        #liars-table { background: rgba(33, 3, 5, 0.75); border-color: rgba(229, 9, 20, 0.2); }
-        #liars-table h3 { color: #e50914; }
-        #liars-table .project-btn { background: #e50914; color: var(--text-color); }
-        #liars-table .project-btn:hover { box-shadow: 0 0 20px -5px #e50914; }
+        #worldchatter .project-btn:hover {
+            box-shadow: 0 0 20px -5px #1fdf90;
+        }
+
+        #hibernation {
+            background: #4141412e;
+            border-color: #e7e7e7;
+        }
+
+        #hibernation h3 {
+            color: #ffffff;
+        }
+
+        #hibernation .project-btn {
+            background: #b1b1b1;
+            color: var(--bg-dark);
+        }
+
+        #hibernation .project-btn:hover {
+            box-shadow: 0 0 20px -5px #b1b1b1;
+        }
+
+        #geminicraft {
+            background: #8ab4f82e;
+            border-color: #8ab4f8;
+        }
+
+        #geminicraft h3 {
+            color: #8ab4f8;
+        }
+
+        #geminicraft .project-btn {
+            background: #8ab4f8;
+            color: var(--bg-dark);
+        }
+
+        #geminicraft .project-btn:hover {
+            box-shadow: 0 0 20px -5px #8ab4f8;
+        }
+
+        #pebbleantivpn {
+            background: #f3742f2e;
+            border-color: #f3732f;
+        }
+
+        #pebbleantivpn h3 {
+            color: #f3732f;
+        }
+
+        #pebbleantivpn .project-btn {
+            background: #f3732f;
+            color: var(--text-color);
+        }
+
+        #pebbleantivpn .project-btn:hover {
+            box-shadow: 0 0 20px -5px #f3732f;
+        }
+
+        #liars-table {
+            background: rgba(33, 3, 5, 0.75);
+            border-color: rgba(229, 9, 20, 0.2);
+        }
+
+        #liars-table h3 {
+            color: #e50914;
+        }
+
+        #liars-table .project-btn {
+            background: #e50914;
+            color: var(--text-color);
+        }
+
+        #liars-table .project-btn:hover {
+            box-shadow: 0 0 20px -5px #e50914;
+        }
+
+        /* Team Section */
+        #team {
+            padding-bottom: 60px;
+        }
+
+        #team h2 {
+            margin-bottom: 1rem;
+        }
+
+        #team .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-member-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .member-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        .team-member-card .card-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .team-member-card img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .team-member-card h3 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .team-member-card .role {
+            font-size: 1rem;
+            color: #8ab4f8;
+            margin-bottom: 1rem;
+        }
+
+        .team-member-card .bio {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        #team h2:not(:first-of-type) {
+            margin-top: 5rem;
+        }
+
+        .team-social-links {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .team-social-links a {
+            color: var(--text-muted);
+            font-size: 1.6rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .team-social-links a:hover {
+            color: var(--primary-color);
+            transform: scale(1.15);
+        }
+
+        /* Compact View for Team */
+        #team .team-grid.compact-view {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        #team .team-grid.compact-view .team-member-card {
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            justify-content: space-between;
+        }
+
+        #team .team-grid.compact-view .member-details {
+            flex-direction: row;
+            align-items: center;
+            flex-grow: 0;
+        }
+
+        #team .team-grid.compact-view .team-member-card img {
+            width: 80px;
+            height: 80px;
+            margin: 0 1.5rem 0 0;
+        }
+
+        #team .team-grid.compact-view .card-content .bio {
+            display: none;
+        }
+
+        #team .team-grid.compact-view .team-member-card .team-social-links {
+            margin-top: 0;
+        }
+
+        #team .team-grid.compact-view .team-member-card .role {
+            margin-bottom: 0.25rem;
+        }
+
+        #team .team-grid.compact-view .team-member-card .card-content {
+            flex-grow: 0;
+        }
+
+        /* Project Modal */
+        #project-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #project-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #101010;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+            position: relative;
+            padding: 2.5rem 3rem;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+        }
+
+        #project-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        #modal-project-title {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        #modal-project-video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #modal-project-video iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        #modal-project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        #modal-project-gallery.hidden {
+            display: none;
+        }
+
+        #modal-project-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #modal-project-description {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        #modal-project-links a {
+            margin-right: 1rem;
+        }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 2.5rem 2rem;
+            padding: 4rem 2rem 2.5rem 2rem;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             margin-top: 5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
         }
-        
-        .platform-showcase {
-            padding-bottom: 2rem;
-            margin-bottom: 1.5rem;
+
+        .footer-section {
+            padding-bottom: 2.5rem;
+            margin-bottom: 2.5rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .platform-showcase p, .contact-info p, .footer-copyright {
+        .footer-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .footer-section p.section-title {
             color: var(--text-muted);
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .platform-showcase a { display: inline-block; transition: transform 0.3s ease; }
-        .platform-showcase a:hover { transform: scale(1.05); }
-        .platform-showcase img { height: 35px; width: auto; filter: grayscale(100%) brightness(150%); transition: filter 0.3s ease; }
-        .platform-showcase a:hover img { filter: grayscale(0%) brightness(100%); }
-        
-        .contact-info a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s ease;
+        .platform-showcase a {
+            display: inline-block;
+            margin: 0 0.5rem;
+            transition: transform 0.3s ease;
         }
-        .contact-info a:hover { color: var(--primary-color); }
 
-        .footer-copyright { margin-top: 2rem; margin-bottom: 0; }
-        
-        @media (max-width: 950px) {
-            .project-card, .project-card:nth-child(odd) { flex-direction: column; }
-            .project-image { width: 100%; height: 300px; }
-            .project-content { padding: 2.5rem; }
+        .platform-showcase a:hover {
+            transform: scale(1.05);
         }
+
+        .platform-showcase img {
+            height: 35px;
+            width: auto;
+            filter: grayscale(100%) brightness(150%);
+            transition: filter 0.3s ease;
+        }
+
+        .platform-showcase a:hover img {
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .contact-info .contact-intro {
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.7;
+        }
+
+        .contact-info a.email-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--bg-dark);
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-info a.email-link:hover {
+            background: #cccccc;
+            transform: scale(1.05);
+        }
+
+        .footer-copyright {
+            margin-top: 2rem;
+            margin-bottom: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 950px) {
+
+            .project-card,
+            .project-card:nth-child(odd) {
+                flex-direction: column;
+            }
+
+            .project-image {
+                width: 100%;
+                height: 300px;
+            }
+
+            .project-content {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                inset: 0;
+                height: 100vh;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 2rem 1.5rem;
+                background: rgba(0, 0, 0, 0.95);
+                transform: translateX(100%);
+                transition: transform 350ms ease-out;
+                z-index: 1050;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            nav[data-visible="true"] {
+                transform: translateX(0);
+            }
+
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                gap: 2.5rem;
+            }
+
+            .nav-links a {
+                font-size: 1.8rem;
+            }
+
+            .social-group {
+                border: none;
+                position: absolute;
+                bottom: 4rem;
+                padding: 0;
+            }
+
+            /* Mobile Layouts & Controls */
+            #projects .layout-buttons,
+            #team .layout-buttons {
+                display: none;
+            }
+
+            .controls-container {
+                justify-content: center;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            /* Enforce Compact View for Projects on mobile */
+            .projects-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+                gap: 1.5rem !important;
+            }
+
+            .projects-container .project-card,
+            .projects-container .project-card:nth-child(odd) {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+
+            .projects-container .project-image {
+                min-height: 180px !important;
+                height: 180px !important;
+            }
+
+            .projects-container .project-content {
+                padding: 1.5rem !important;
+            }
+
+            .projects-container .project-content h3 {
+                font-size: 1.5rem !important;
+                margin-bottom: 0 !important;
+            }
+
+            .projects-container .project-content p,
+            .projects-container .project-content .project-btn {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 600px) {
-            nav { flex-wrap: wrap; justify-content: center;} 
-            .nav-links { order: 1;}
-            .social-group { order: 2; width: 100%; justify-content: center; padding-left: 0; border: 0; padding-top: 0.5rem;}
-            #main .main-logo { width: 90%; }
-            #projects h2 { font-size: 2.8rem; }
-            .project-content h3 { font-size: 2.5rem; }
+            #main .main-logo {
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 2.8rem;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            #modal-project-title {
+                font-size: 2.2rem;
+            }
+
+            .projects-container {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem 1rem;
+                /* reduce side padding on smaller screens */
+            }
+
+            .mobile-nav-toggle {
+                position: absolute;
+                right: 2rem;
+                /* make sure it stays inside the header */
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .header-logo {
+                max-width: 120px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+            .controls-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+                /* ✅ allows wrapping */
+                justify-content: center;
+                /* ✅ centers wrapped rows */
+                row-gap: 0.6rem;
+                /* space between rows */
+            }
+
+            .filter-btn {
+                flex: 1 1 auto;
+                /* ✅ lets them resize naturally */
+                min-width: 120px;
+                /* prevent buttons from being too small */
+                text-align: center;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div id="shape-grid"></div>
 
     <header>
-        <a href="#main">
-            <img src="logo.png" alt="Meraki Studios Logo" class="header-logo">
-        </a>
-       
-        <nav>
+        <a href="#main"><img src="images/logo.png" alt="Meraki Studios Logo" class="header-logo"></a>
+        <nav data-visible="false">
             <div class="nav-links">
                 <a href="#main" class="active">Main</a>
                 <a href="#projects">Projects</a>
+                <a href="#team">Our Team</a>
             </div>
             <div class="social-group">
-                <a href="/tiktok" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                <a href="https://github.com/MerakiDotStudios" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="/discord" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://www.merakistudios.dev/tiktok" target="_blank" title="TikTok"><i
+                        class="fab fa-tiktok"></i></a>
+                <a href="https://github.com/MerakiDotStudios" target="_blank" title="GitHub"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://www.merakistudios.dev/discord" target="_blank" title="Discord"><i
+                        class="fa-brands fa-discord"></i></a>
             </div>
         </nav>
+        <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            <span class="sr-only">Menu</span>
+        </button>
     </header>
 
     <section id="main">
-        <div class="logo-container">
-            <img src="logo.png" alt="Meraki Studios Logo" class="main-logo">
-        </div>
+        <div class="logo-container"><img src="images/logo.png" alt="Meraki Studios Logo" class="main-logo"></div>
         <p>The Official Organization where a bunch of Nerds create limitless projects.</p>
     </section>
 
     <section id="projects">
         <h2>Our Projects</h2>
-
-        <div id="worldchatter" class="project-card">
-            <div class="project-image" style="background-image: url('wclogo.png');"></div>
-            <div class="project-content">
-                <h3>WorldChatter</h3>
-                <p>A complete chat overhaul plugin that makes server communication smooth and easy. It includes features like anti-swear filters, ad-blocking, and fully customizable chat channels—giving you full control over how players interact.</p>
-                <a href="https://modrinth.com/plugin/worldchatter" target="_blank" class="project-btn">View on Modrinth</a>
+        <div class="controls-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Show All</button>
+                <button class="filter-btn" data-filter="minecraft">Minecraft</button>
+                <button class="filter-btn" data-filter="game">Game</button>
+                <button class="filter-btn" data-filter="website">Website</button>
+                <button class="filter-btn" data-filter="tool">Tool</button>
             </div>
-        </div>
-        
-        <div id="geminicraft" class="project-card">
-            <div class="project-image" style="background-image: url('gclogo.png');"></div>
-            <div class="project-content">
-                <h3>GeminiCraft</h3>
-                <p>Bring Google’s powerful Gemini AI straight into your Minecraft server! Let your players chat with a cutting-edge AI assistant directly through in-game chat.</p>
-                <a href="https://modrinth.com/plugin/geminicraft" target="_blank" class="project-btn">View on Modrinth</a>
+            <div class="layout-buttons">
+                <button class="layout-btn" data-view="list" title="List View"><i class="fas fa-list"></i></button>
+                <button class="layout-btn active" data-view="grid" title="Grid View"><i
+                        class="fas fa-th-large"></i></button>
+                <button class="layout-btn" data-view="compact" title="Compact View"><i class="fas fa-grip"></i></button>
             </div>
         </div>
 
-        <div id="pebbleantivpn" class="project-card">
-            <div class="project-image" style="background-image: url('pavbg.png');"></div>
-            <div class="project-content">
-                <h3>PebbleAntiVPN</h3>
-                <p>A powerful, free anti-VPN tool built to protect your server. It blocks connections from proxies and VPNs, and even lets you restrict access by country.</p>
-                <a href="https://pav.merakistudios.dev/" target="_blank" class="project-btn">Visit Website</a>
+        <div class="projects-container grid-view">
+            <div id="worldchatter" class="project-card" data-tags="minecraft, tool" data-title="WorldChatter"
+                data-youtube-id="O95rzhgVSZI"
+                data-description="A complete chat overhaul plugin that makes server communication smooth and easy. It includes features like anti-swear filters, ad-blocking, and fully customizable chat channels—giving you full control over how players interact."
+                data-images=""
+                data-links-html="<a href='https://modrinth.com/plugin/worldchatter' target='_blank' class='project-btn' style='background: #1fdf90; color: var(--bg-dark);'>View on Modrinth</a>">
+                <div class="project-image" style="background-image: url('images/wclogo.png');"></div>
+                <div class="project-content">
+                    <h3>WorldChatter</h3>
+                    <p>A complete chat overhaul plugin that makes server communication smooth and easy. It includes
+                        features like anti-swear filters, ad-blocking, and fully customizable chat channels.</p><a
+                        href="https://modrinth.com/plugin/worldchatter" target="_blank" class="project-btn">View on
+                        Modrinth</a>
+                </div>
             </div>
-        </div>
-
-        <div id="liars-table" class="project-card">
-            <div class="project-image" style="background-color: #2b0003; display:flex; justify-content:center; align-items:center; font-size: 6rem;">
-                <i class="fa-solid fa-user-secret"></i>
+            <div id="hibernation" class="project-card" data-tags="minecraft, tool" data-title="MC - Hibernation System"
+                data-youtube-id=""
+                data-description="MC - Hibernation System is the ultimate power-saving solution for Minecraft servers. Automatically put your server on sleep mode when it's empty and bring it back online the moment a player connects — all while using barely any RAM or CPU."
+                data-images="images/bannerhibernation.png"
+                data-links-html="<a href='https://www.sourcexchange.net/products/minecraft-java-hibernation-system' target='_blank' class='project-btn' style='background: #4F46E5; color: var(--bg-dark);'>View on sourceXchange (Java) </a><a href='https://www.sourcexchange.net/products/minecraft-bedrock-hibernation-system' target='_blank' class='project-btn' style='background: #4F46E5; color: var(--bg-dark);'>View on sourceXchange (Bedrock) </a>">
+                <div class="project-image" style="background-image: url('images/hibernation.png');"></div>
+                <div class="project-content">
+                    <h3>MC - Hibernation System</h3>
+                    <p>The ultimate power-saving solution for Minecraft servers.</p><a
+                        href="https://www.sourcexchange.net/teams/6157/profile" target="_blank" class="project-btn">View
+                        on sourceXchange</a>
+                </div>
             </div>
-            <div class="project-content">
-                <h3>Liar's Table</h3>
-                <p>A one-of-a-kind multiplayer card game crafted entirely within Minecraft. Engage in a high-stakes battle of wits, bluffs, and bold moves, all powered by creative gameplay design.</p>
-                <a href="#" class="project-btn">Coming Soon</a>
+            <div id="geminicraft" class="project-card" data-tags="minecraft, tool" data-title="GeminiCraft"
+                data-youtube-id="F-xHKUArMv4"
+                data-description="Bring Google’s powerful Gemini AI straight into your Minecraft server! Let your players chat with a cutting-edge AI assistant directly through in-game chat. The setup is simple, and it offers a unique, interactive experience for any community."
+                data-images=""
+                data-links-html="<a href='https://modrinth.com/plugin/geminicraft' target='_blank' class='project-btn' style='background: #8ab4f8; color: var(--bg-dark);'>View on Modrinth</a>">
+                <div class="project-image" style="background-image: url('images/gclogo.png');"></div>
+                <div class="project-content">
+                    <h3>GeminiCraft</h3>
+                    <p>Bring Google’s powerful Gemini AI straight into your Minecraft server! Let your players chat with
+                        a cutting-edge AI assistant directly through in-game chat.</p><a
+                        href="https://modrinth.com/plugin/geminicraft" target="_blank" class="project-btn">View on
+                        Modrinth</a>
+                </div>
+            </div>
+            <div id="pebbleantivpn" class="project-card" data-tags="website, tool, minecraft" data-title="PebbleAntiVPN"
+                data-description="A powerful, free anti-VPN tool built to protect your server. It blocks connections from proxies and VPNs, and even lets you restrict access by country. Our API is fast, reliable, and easy to integrate, ensuring your server remains safe from malicious actors."
+                data-images="images/pavbg.png"
+                data-links-html="<a href='https://pav.merakistudios.dev/' target='_blank' class='project-btn' style='background: #f3732f; color: var(--text-color);'>Visit Website</a>">
+                <div class="project-image" style="background-image: url('images/pavbg.png');"></div>
+                <div class="project-content">
+                    <h3>PebbleAntiVPN</h3>
+                    <p>A powerful, free anti-VPN tool built to protect your server. It blocks connections from proxies
+                        and VPNs, and even lets you restrict access by country.</p><a
+                        href="https://pav.merakistudios.dev/" target='_blank' class="project-btn">Visit Website</a>
+                </div>
+            </div>
+            <div id="liars-table" class="project-card" data-tags="game, minecraft" data-title="Liar's Table"
+                data-youtube-id="lQrCyVOHZhk"
+                data-description="A one-of-a-kind multiplayer card game crafted entirely within Minecraft. Engage in a high-stakes battle of wits, bluffs, and bold moves, all powered by creative gameplay design. This project is currently in active development, and we're excited to share more soon!"
+                data-images=""
+                data-links-html="<a href='#' class='project-btn' style='background: #e50914; color: var(--text-color);'>Coming Soon</a>">
+                <div class="project-image" style="background-color: #2b0003; font-size: 6rem;"><i
+                        class="fa-solid fa-user-secret"></i></div>
+                <div class="project-content">
+                    <h3>Liar's Table</h3>
+                    <p>A one-of-a-kind multiplayer card game crafted entirely within Minecraft. Engage in a high-stakes
+                        battle of wits, bluffs, and bold moves, all powered by creative gameplay design.</p><a href="#"
+                        class="project-btn">Coming Soon</a>
+                </div>
             </div>
         </div>
     </section>
 
+    <section id="team">
+        <div style="text-align:center;">
+            <div class="controls-container" id="team-controls">
+                <div class="layout-buttons">
+                    <button class="layout-btn active" data-view="list" title="List View"><i
+                            class="fas fa-th-large"></i></button>
+                    <button class="layout-btn" data-view="compact" title="Compact View"><i
+                            class="fas fa-list"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Founders</h2>
+        <div class="team-grid">
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/omarpic.png" alt="Omar Mohamed">
+                    <div class="card-content">
+                        <h3>Omar Mohamed</h3>
+                        <p class="role">Founder of Meraki Studios</p>
+                        <p class="bio">I'm proud to have founded Meraki Studios, a hub for creativity that began as a
+                            dream between friends. Our name, 'Meraki', means to put your soul into your work, and that
+                            is our promise.</p>
+                    </div>
+                </div>
+                <div class="team-social-links"><a href="https://www.linkedin.com/in/omardotcontent/" target="_blank"
+                        title="LinkedIn"><i class="fab fa-linkedin"></i></a><a
+                        href="https://www.youtube.com/@OmarDotContent" target="_blank" title="YouTube"><i
+                            class="fab fa-youtube"></i></a><a href="https://github.com/omardotcontent" target="_blank"
+                        title="GitHub"><i class="fab fa-github"></i></a></div>
+            </div>
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/ghostpic.jpg" alt="Ghost">
+                    <div class="card-content">
+                        <h3>Ghost</h3>
+                        <p class="role">Founder of Meraki Studios</p>
+                        <p class="bio">Mixing pixels and beats since deadlines became a personality trait.</p>
+                    </div>
+                </div>
+                <div class="team-social-links"><a href="https://github.com/ZeyadYasser114" target="_blank"
+                        title="GitHub"><i class="fab fa-github"></i></a><a href="https://www.youtube.com/@ghostmate114"
+                        target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a></div>
+            </div>
+        </div>
+
+        <h2>Co-Founders</h2>
+        <div class="team-grid">
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/abdelazizpic.jpg" alt="Abdelaziz Hasaneen">
+                    <div class="card-content">
+                        <h3>Abdelaziz Hasaneen</h3>
+                        <p class="role">Co-Founder of Meraki Studios</p>
+                        <p class="bio">"Loves Java so much he dreams in stack traces." says he</p>
+                    </div>
+                </div>
+                <div class="team-social-links"><a href="https://github.com/Abdelaziz1586" target="_blank"
+                        title="GitHub"><i class="fab fa-github"></i></a><a
+                        href="https://abdelaziz1586.github.io/#projects" target="_blank" title="Portfolio"><i
+                            class="fa-solid fa-globe"></i></a></div>
+            </div>
+        </div>
+
+        <h2>Team Members</h2>
+        <div class="team-grid">
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/saphiellepic.jpg" alt="Saphielle">
+                    <div class="card-content">
+                        <h3>Saphielle</h3>
+                        <p class="role">Unity Game Developer & Digital Artist</p>
+                        <p class="bio">“A Game Developer is a flex.”</p>
+                    </div>
+                </div>
+                <div class="team-social-links"><a href="https://www.instagram.com/saphiellecodes/" target="_blank"
+                        title="Instagram"><i class="fab fa-instagram"></i></a><a
+                        href="https://www.tiktok.com/@saphiellecodes" target="_blank" title="Tiktok"><i
+                            class="fab fa-tiktok"></i></a></div>
+            </div>
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/himaripic.jpg" alt="Himari">
+                    <div class="card-content">
+                        <h3>Himari</h3>
+                        <p class="role">Visual Artist (Traditional + Digital)</p>
+                        <p class="bio">No artist tolerates reality.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="team-member-card">
+                <div class="member-details">
+                    <img src="images/yosifepic.png" alt="Youssef7Y">
+                    <div class="card-content">
+                        <h3>Youssef7Y</h3>
+                        <p class="role">Story Producer</p>
+                        <p class="bio">I may not have a specific profession, but I'm good at what i know</p>
+                    </div>
+                </div>
+                <div class="team-social-links"><a href="https://www.upwork.com/freelancers/~0124d7b34148cbd8e0"
+                        target="_blank" title="Upwork"><i class="fa-brands fa-upwork"></i></a></div>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <div class="platform-showcase">
-            <p>Find Our Projects On</p>
-            <a href="https://modrinth.com/organization/MerakiStudios" target="_blank" title="Modrinth">
-                <img src="modrinth.png" alt="Modrinth Logo">
-            </a>
+        <div class="footer-section platform-showcase">
+            <p class="section-title">Find Our Projects On</p><a href="https://modrinth.com/organization/MerakiStudios"
+                target="_blank" title="Modrinth"><img src="images/modrinth.png" alt="Modrinth Logo"></a>
         </div>
-
-        <div class="contact-info">
-            <p>Get in Touch</p>
-            <a href="mailto:contact@merakistudios.dev">contact@merakistudios.dev</a>
+        <div id="contact" class="footer-section contact-info">
+            <p class="section-title">Get in Touch</p>
+            <p class="contact-intro">Have a question, or just want to say hello? We'd love to hear from you!</p><a
+                href="mailto:contact@merakistudios.dev" class="email-link">contact@merakistudios.dev</a>
         </div>
-
         <p class="footer-copyright">© 2025 Meraki Studios. All Rights Reserved.</p>
     </footer>
 
+    <div id="project-modal">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <h2 id="modal-project-title"></h2>
+            <div id="modal-project-video"></div>
+            <div id="modal-project-gallery"></div>
+            <p id="modal-project-description"></p>
+            <div id="modal-project-links"></div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- General Setup & Mobile Nav ---
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const primaryNav = document.querySelector('nav');
+            const allNavLinks = document.querySelectorAll('nav a');
+
+            mobileNavToggle.addEventListener('click', () => {
+                const isVisible = primaryNav.getAttribute('data-visible') === 'true';
+                primaryNav.setAttribute('data-visible', !isVisible);
+                mobileNavToggle.setAttribute('aria-expanded', !isVisible);
+                mobileNavToggle.querySelector('i').className = isVisible ? "fa-solid fa-bars" : "fa-solid fa-xmark";
+                document.body.style.overflow = isVisible ? '' : 'hidden';
+            });
+
+            const closeMenu = () => {
+                primaryNav.setAttribute('data-visible', 'false');
+                mobileNavToggle.setAttribute('aria-expanded', 'false');
+                mobileNavToggle.querySelector('i').className = "fa-solid fa-bars";
+                document.body.style.overflow = '';
+            };
+            allNavLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+            // --- Scroll & Animation Observers ---
+            const cardObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
             }, { threshold: 0.2 });
-            document.querySelectorAll('.project-card').forEach(card => observer.observe(card));
+            document.querySelectorAll('.project-card').forEach(card => cardObserver.observe(card));
 
             const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav .nav-links a'); // Updated selector
+            const desktopNavLinks = document.querySelectorAll('header nav .nav-links a');
             window.addEventListener('scroll', () => {
                 let current = 'main';
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 60) {
-                        current = section.getAttribute('id');
-                    }
+                    if (pageYOffset >= section.offsetTop - 70) current = section.id;
                 });
-
-                navLinks.forEach(a => {
-                    a.classList.remove('active');
-                    if (a.getAttribute('href') === '#' + current) {
-                        a.classList.add('active');
-                    }
+                desktopNavLinks.forEach(a => {
+                    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
                 });
             });
 
-            const gridContainer = document.getElementById('shape-grid');
-            const shapeCount = 100;
-            const minSize = 80;
-            const maxSize = 150;
-            const shapeTypes = [4, 5, 6, 7, 8];
-            const lightRadius = 300;
-            
-            let shapes = [];
-            const mousePos = { x: -9999, y: -9999 };
+            // --- Project Modal Logic ---
+            const projectModal = document.getElementById('project-modal');
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.project-btn')) return;
+                    document.getElementById('modal-project-title').textContent = card.dataset.title;
+                    document.getElementById('modal-project-description').textContent = card.dataset.description;
+                    document.getElementById('modal-project-links').innerHTML = card.dataset.linksHtml;
+                    const videoContainer = document.getElementById('modal-project-video');
+                    const youtubeId = card.dataset.youtubeId;
+                    videoContainer.style.display = (youtubeId && youtubeId.trim()) ? 'block' : 'none';
+                    if (youtubeId && youtubeId.trim()) videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    else videoContainer.innerHTML = '';
 
-            function createShapes() {
-                gridContainer.innerHTML = '';
-                shapes = [];
-                gridContainer.style.height = `${document.body.scrollHeight}px`;
+                    const gallery = document.getElementById('modal-project-gallery');
+                    const images = card.dataset.images ? card.dataset.images.split(',').filter(img => img.trim()) : [];
+                    gallery.innerHTML = '';
+                    gallery.classList.toggle('hidden', images.length === 0);
+                    if (images.length > 0) {
+                        images.forEach(imgUrl => {
+                            const img = document.createElement('img');
+                            img.src = imgUrl.trim();
+                            img.alt = `${card.dataset.title} screenshot`;
+                            gallery.appendChild(img);
+                        });
+                    }
+                    projectModal.classList.add('show');
+                });
+            });
 
-                const pageHeight = document.body.scrollHeight;
+            const closeModal = () => {
+                projectModal.classList.remove('show');
+                document.getElementById('modal-project-video').innerHTML = '';
+            };
+            document.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+            projectModal.addEventListener('click', (e) => { if (e.target === projectModal) closeModal(); });
 
-                for (let i = 0; i < shapeCount; i++) {
-                    const size = Math.random() * (maxSize - minSize) + minSize;
-                    const sides = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
-                    
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * pageHeight;
-                    const rotation = Math.random() * 360;
-                    
-                    const svg = createPolygon(sides, size, rotation);
-                    svg.style.left = `${x - size / 2}px`;
-                    svg.style.top = `${y - size / 2}px`;
-                    
-                    gridContainer.appendChild(svg);
-                    shapes.push({ element: svg, x, y });
-                }
-            }
+            // --- Project Controls Logic ---
+            const projectControls = document.querySelector('#projects .controls-container');
+            const filterButtons = projectControls.querySelectorAll('.filter-btn');
+            const layoutButtons = projectControls.querySelectorAll('.layout-btn');
+            const projectsContainer = document.querySelector('.projects-container');
+            const allProjectCards = Array.from(projectsContainer.querySelectorAll('.project-card'));
+            let activeFilters = new Set();
 
-            function createPolygon(sides, size, rotation) {
-                const svgNS = "http://www.w3.org/2000/svg";
-                const svg = document.createElementNS(svgNS, "svg");
-                const polygon = document.createElementNS(svgNS, "polygon");
-                
-                svg.setAttribute('width', size);
-                svg.setAttribute('height', size);
-                svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
-                svg.style.transform = `rotate(${rotation}deg)`;
-                
-                const points = [];
-                const angleStep = (Math.PI * 2) / sides;
-                const radius = size / 2;
+            layoutButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const view = button.dataset.view;
+                    layoutButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    projectsContainer.className = 'projects-container';
+                    projectsContainer.classList.add(`${view}-view`);
+                });
+            });
 
-                for (let i = 0; i < sides; i++) {
-                    const angle = i * angleStep;
-                    const x = radius + radius * Math.cos(angle);
-                    const y = radius + radius * Math.sin(angle);
-                    points.push(`${x},${y}`);
-                }
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.dataset.filter;
+                    const showAllBtn = projectControls.querySelector('[data-filter="all"]');
 
-                polygon.setAttribute('points', points.join(' '));
-                svg.appendChild(polygon);
-                return svg;
-            }
-
-            function animationLoop() {
-                const scrollY = window.scrollY;
-
-                shapes.forEach(shape => {
-                    const distance = Math.sqrt(
-                        Math.pow(mousePos.x - shape.x, 2) + Math.pow((mousePos.y + scrollY) - shape.y, 2)
-                    );
-
-                    if (distance < lightRadius) {
-                        const brightness = 1 - (distance / lightRadius);
-                        const colorValue = Math.floor(brightness * 100) + 20;
-                        const color = `rgb(${colorValue}, ${colorValue + 80}, ${colorValue + 100})`;
-                        
-                        shape.element.style.fill = color;
-                        shape.element.style.filter = `drop-shadow(0 0 ${brightness * 15}px ${color})`;
+                    if (filter === 'all') {
+                        activeFilters.clear();
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        showAllBtn.classList.add('active');
                     } else {
-                        shape.element.style.fill = '#080808';
-                        shape.element.style.filter = 'none';
+                        button.classList.toggle('active');
+                        if (activeFilters.has(filter)) {
+                            activeFilters.delete(filter);
+                        } else {
+                            activeFilters.add(filter);
+                        }
+                        showAllBtn.classList.remove('active');
                     }
-                });
 
-                requestAnimationFrame(animationLoop);
+                    if (activeFilters.size === 0) {
+                        showAllBtn.classList.add('active');
+                    }
+
+                    applyFilters();
+                });
+            });
+
+            function applyFilters() {
+                const shownCards = [];
+                const hiddenCards = [];
+                allProjectCards.forEach(card => {
+                    const tags = card.dataset.tags ? card.dataset.tags.split(',').map(tag => tag.trim()) : [];
+                    const shouldShow = activeFilters.size === 0 || tags.some(tag => activeFilters.has(tag));
+                    card.classList.toggle('hide', !shouldShow);
+                    if (shouldShow) shownCards.push(card);
+                    else hiddenCards.push(card);
+                });
+                shownCards.forEach(card => projectsContainer.appendChild(card));
+                hiddenCards.forEach(card => projectsContainer.appendChild(card));
             }
-            
-            createShapes();
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(createShapes, 500);
-            });
-            
-            window.addEventListener('mousemove', e => {
-                mousePos.x = e.clientX;
-                mousePos.y = e.clientY;
-            });
-            
-            animationLoop();
+
+            // --- Team Controls Logic ---
+            const teamControls = document.querySelector('#team-controls');
+            if (teamControls) {
+                const teamLayoutButtons = teamControls.querySelectorAll('.layout-btn');
+                const allTeamGrids = document.querySelectorAll('#team .team-grid');
+                teamLayoutButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const view = button.dataset.view;
+                        teamLayoutButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        allTeamGrids.forEach(grid => {
+                            grid.classList.remove('compact-view');
+                            if (view === 'compact') {
+                                grid.classList.add('compact-view');
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Background Shape Animation
+            const gridContainer = document.getElementById('shape-grid');
+            const shapeCount = 200;
+
+            if (gridContainer) {
+                const mousePos = { x: -9999, y: -9999 };
+                let shapes = [];
+
+                function createShapes() {
+                    gridContainer.innerHTML = '';
+                    shapes = [];
+                    gridContainer.style.height = `${document.body.scrollHeight}px`;
+                    const pageHeight = document.body.scrollHeight;
+                    for (let i = 0; i < shapeCount; i++) {
+                        const size = Math.random() * (150 - 80) + 80;
+                        const sides = [4, 5, 6, 7, 8][Math.floor(Math.random() * 5)];
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * pageHeight;
+                        const rotation = Math.random() * 360;
+                        const svg = createPolygon(sides, size, rotation);
+                        svg.style.left = `${x - size / 2}px`;
+                        svg.style.top = `${y - size / 2}px`;
+                        gridContainer.appendChild(svg);
+                        shapes.push({ element: svg, x, y });
+                    }
+                }
+
+                function createPolygon(sides, size, rotation) {
+                    const svgNS = "http://www.w3.org/2000/svg";
+                    const svg = document.createElementNS(svgNS, "svg");
+                    svg.setAttribute('width', size);
+                    svg.setAttribute('height', size);
+                    svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+                    svg.style.transform = `rotate(${rotation}deg)`;
+                    const polygon = document.createElementNS(svgNS, "polygon");
+                    const points = [];
+                    const angleStep = (Math.PI * 2) / sides;
+                    const radius = size / 2;
+                    for (let i = 0; i < sides; i++) {
+                        const angle = i * angleStep;
+                        const x = radius + radius * Math.cos(angle);
+                        const y = radius + radius * Math.sin(angle);
+                        points.push(`${x},${y}`);
+                    }
+                    polygon.setAttribute('points', points.join(' '));
+                    svg.appendChild(polygon);
+                    return svg;
+                }
+
+                function animationLoop() {
+                    const scrollY = window.scrollY;
+                    const lightRadius = 300;
+                    shapes.forEach(shape => {
+                        const distance = Math.sqrt(Math.pow(mousePos.x - shape.x, 2) + Math.pow((mousePos.y + scrollY) - shape.y, 2));
+                        if (distance < lightRadius) {
+                            const brightness = 1 - (distance / lightRadius);
+                            const colorValue = Math.floor(brightness * 100) + 20;
+                            const color = `rgb(${colorValue}, ${colorValue + 80}, ${colorValue + 100})`;
+                            shape.element.style.fill = color;
+                            shape.element.style.filter = `drop-shadow(0 0 ${brightness * 15}px ${color})`;
+                        } else {
+                            shape.element.style.fill = '#080808';
+                            shape.element.style.filter = 'none';
+                        }
+                    });
+                    requestAnimationFrame(animationLoop);
+                }
+
+                createShapes();
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(createShapes, 500);
+                });
+                window.addEventListener('mousemove', e => {
+                    mousePos.x = e.clientX;
+                    mousePos.y = e.clientY;
+                });
+                animationLoop();
+            }
         });
     </script>
-
 </body>
-
 </html>
