@@ -1,520 +1,646 @@
-// main.js - Main application logic for Meraki Studios website
+// main.js - Final Optimized Version with All Original Features (modified to register detail-card floats)
+(function () {
+  "use strict";
 
-(function() {
-    "use strict";
+  // Performance optimization flags
+  const PERF_CONFIG = {
+    useIntersectionObserver: "IntersectionObserver" in window,
+    useIdleCallback: "requestIdleCallback" in window,
+    useResizeObserver: "ResizeObserver" in window
+  };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize the site with configuration
-        initializeSite();
-        setupEventListeners();
-        setupAnimations();
-        setupConsole();
+  // Initialize performance monitoring
+  const perfMetrics = {
+    initStart: 0,
+    domReady: 0,
+    fullLoad: 0,
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    perfMetrics.initStart = performance.now();
+    const domCache = cacheDOMElements();
+
+    // Critical path initialization
+    initializeCritical(domCache);
+
+    // Add header click behavior: scroll to top and close mobile nav if open
+    try {
+      const headerEl = document.querySelector('header');
+      if (headerEl) {
+        headerEl.addEventListener('click', (e) => {
+          // If the user clicked an interactive element inside header, ignore
+          if (e.target.closest('button, a, input, select')) return;
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0,0); }
+          // close nav if open
+          try {
+            const nav = document.querySelector('nav');
+            const toggle = document.querySelector('.mobile-nav-toggle');
+            if (nav && nav.getAttribute('data-visible') === 'true') {
+              nav.setAttribute('data-visible', 'false');
+              if (toggle) toggle.setAttribute('aria-expanded', 'false');
+              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch(e) {}
+              try { nav.style.zIndex = ''; } catch(e) {}
+              try { document.body.classList.remove('nav-open'); } catch(e) {}
+              document.body.style.overflow = '';
+            }
+          } catch (e) {}
+        });
+      }
+    } catch (e) {}
+
+    // Header logo links: intercept to scroll to top instead of navigating (improves single-page UX)
+    try {
+      const logoLinks = document.querySelectorAll('.header-logo-link');
+      logoLinks.forEach(link => {
+        link.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0,0); }
+          // close nav if open
+          try {
+            const nav = document.querySelector('nav');
+            const toggle = document.querySelector('.mobile-nav-toggle');
+            if (nav && nav.getAttribute('data-visible') === 'true') {
+              nav.setAttribute('data-visible', 'false');
+              if (toggle) toggle.setAttribute('aria-expanded', 'false');
+              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch(e) {}
+              try { nav.style.zIndex = ''; } catch(e) {}
+              try { document.body.classList.remove('nav-open'); } catch(e) {}
+              document.body.style.overflow = '';
+            }
+          } catch (e) {}
+        });
+      });
+    } catch (e) {}
+
+    // Non-critical initialization with priority queuing
+    if (PERF_CONFIG.useIdleCallback) {
+      const tasks = [
+        () => renderProjects(domCache.projectsContainer),
+        () => renderTeamMembers(domCache.teamGrid),
+        () => renderFilterButtons(domCache.filterButtons),
+        () =>
+          renderFooter(
+            domCache.platformShowcase,
+            domCache.contactInfo,
+            domCache.copyright
+          ),
+        () => setupScrollHighlight(),
+        () =>
+          setupProjectFiltering(
+            domCache.filterButtons,
+            domCache.projectsContainer
+          ),
+        () => setupProjectModal(domCache.modal, domCache.projectsContainer),
+        () => setupAnimations(),
+      ];
+
+      let taskIndex = 0;
+      const executeTask = (deadline) => {
+        while (taskIndex < tasks.length && deadline.timeRemaining() > 0) {
+          tasks[taskIndex]();
+          taskIndex++;
+        }
+        if (taskIndex < tasks.length) {
+          requestIdleCallback(executeTask);
+        } else {
+          perfMetrics.fullLoad = performance.now();
+          console.log(
+            `[Meraki] Full initialization completed in ${(
+              perfMetrics.fullLoad - perfMetrics.initStart
+            ).toFixed(1)}ms`
+          );
+        }
+      };
+
+      requestIdleCallback(executeTask);
+    } else {
+      setTimeout(() => initializeNonCritical(domCache), 100);
+    }
+  });
+
+  function cacheDOMElements() {
+    // Using more efficient selectors where possible
+    const cache = {
+      root: document.documentElement,
+      loader: document.getElementById("loader-overlay"),
+      modal: document.getElementById("project-modal"),
+      primaryNav: document.querySelector("nav"),
+    };
+
+    // Batch DOM queries for better performance
+    const selectors = {
+      container: ".main-details-container",
+      projectsContainer: ".projects-container",
+      teamGrid: ".team-grid",
+      filterButtons: ".filter-buttons",
+      platformShowcase: ".platform-showcase",
+      contactInfo: ".contact-info",
+      copyright: ".footer-copyright",
+      socialGroup: "header .social-group",
+      mobileNavToggle: ".mobile-nav-toggle",
+    };
+
+    // Use a single pass through the DOM for multiple selectors
+    Object.entries(selectors).forEach(([key, selector]) => {
+      cache[key] = document.querySelector(selector);
     });
 
-    function initializeSite() {
-        // Render studio details
-        renderStudioDetails();
-        
-        // Render projects
-        renderProjects();
-        
-        // Render team members
-        renderTeamMembers();
-        
-        // Render filter buttons
-        renderFilterButtons();
-        
-        // Render footer
-        renderFooter();
-        
-        // Render header social links
-        renderHeaderSocial();
-    }
+    return cache;
+  }
 
-    function renderStudioDetails() {
-        const container = document.querySelector('.main-details-container');
-        if (!container) return;
-        
-        container.innerHTML = SITE_CONFIG.studioDetails.map(detail => `
-            <div class="detail-card">
-                <h3>${detail.title}</h3>
-                <p>${detail.description}</p>
-            </div>
-        `).join('');
-    }
+  function initializeCritical(dom) {
+    if (navigator.hardwareConcurrency <= 2)
+      document.documentElement.classList.add("no-animations");
+    renderStudioDetails(dom.container);
+    renderHeaderSocial(dom.socialGroup);
+    setupLoader(dom.loader);
+    setupMobileNav(dom.mobileNavToggle, dom.primaryNav);
+  }
 
-    function renderProjects() {
-        const container = document.querySelector('.projects-container');
-        if (!container) return;
-        
-        container.innerHTML = SITE_CONFIG.projects.map(project => {
-            const imageHtml = project.image 
-                ? `<div class="project-image" style="background-image: url('${project.image}');"></div>`
-                : `<div class="project-image" style="background-color: ${project.iconBackground}; font-size: 6rem; display: flex; align-items: center; justify-content: center;">
-                     <i class="${project.icon}"></i>
-                   </div>`;
-            
-            const linksHtml = project.links.map(link => 
-                `<a href="${link.url}" target="_blank" class="project-btn" style="${link.style}">${link.text}</a>`
-            ).join('');
-            
-            const galleryImages = project.galleryImages.join(',');
-            
-            return `
-                <div id="${project.id}" 
-                     class="project-card animate-on-scroll" 
-                     data-tags="${project.tags.join(', ')}"
-                     data-title="${project.title}"
-                     data-youtube-id="${project.youtubeId || ''}"
-                     data-description="${project.fullDescription}"
-                     data-images="${galleryImages}"
-                     data-links-html="${linksHtml.replace(/"/g, '&quot;')}"
-                     style="background: ${project.theme.background}; border-color: ${project.theme.borderColor};">
-                    ${imageHtml}
-                    <div class="project-content">
-                        <h3 style="color: ${project.theme.titleColor};">${project.title}</h3>
-                        <p>${project.shortDescription}</p>
-                        ${project.links[0] ? `<a href="${project.links[0].url}" target="_blank" class="project-btn" style="background: ${project.theme.buttonBg}; color: ${project.theme.buttonColor};">${project.links[0].text}</a>` : ''}
-                    </div>
-                </div>
-            `;
-        }).join('');
-        
-        // Apply dynamic hover effects for project buttons
-        document.querySelectorAll('.project-card').forEach(card => {
-            const projectConfig = SITE_CONFIG.projects.find(p => p.id === card.id);
-            if (projectConfig) {
-                const btn = card.querySelector('.project-btn');
-                if (btn) {
-                    btn.addEventListener('mouseenter', () => {
-                        btn.style.boxShadow = `0 0 20px -5px ${projectConfig.theme.buttonHoverShadow}`;
-                    });
-                    btn.addEventListener('mouseleave', () => {
-                        btn.style.boxShadow = '';
-                    });
-                }
-            }
+  function initializeNonCritical(dom) {
+    renderProjects(dom.projectsContainer);
+    renderTeamMembers(dom.teamGrid);
+    renderFilterButtons(dom.filterButtons);
+    renderFooter(dom.platformShowcase, dom.contactInfo, dom.copyright);
+    setupScrollHighlight();
+    setupProjectFiltering(dom.filterButtons, dom.projectsContainer);
+    setupProjectModal(dom.modal, dom.projectsContainer);
+    // console removed — no-op
+    setupAnimations();
+  }
+
+  // Renders studio details into .main-details-container
+  function renderStudioDetails(container) {
+    if (!container) return;
+    const frag = document.createDocumentFragment();
+    SITE_CONFIG.studioDetails.forEach((d) => {
+      const div = document.createElement("div");
+      div.className = "detail-card animate-on-scroll";
+      div.innerHTML = `<h3>${d.title}</h3><p>${d.description}</p>`;
+      frag.appendChild(div);
+    });
+    container.appendChild(frag);
+  }
+
+  function renderHeaderSocial(container) {
+    if (!container || !SITE_CONFIG?.headerSocial) return;
+
+    container.innerHTML = SITE_CONFIG.headerSocial
+      .map(
+        (social) => `
+        <a href="${social.url}" target="_blank" title="${social.platform}">
+          <i class="${social.icon}"></i>
+        </a>
+      `
+      )
+      .join("");
+  }
+
+  function renderProjects(container) {
+    if (!container) return;
+    const frag = document.createDocumentFragment();
+    SITE_CONFIG.projects.forEach((p) => {
+      const img = p.image
+        ? `<div class="project-image" style="background-image: url('${p.image}');"></div>`
+        : `<div class="project-image icon-bg" style="--icon-bg-color: ${p.iconBackground};"><i class="${p.icon}"></i></div>`;
+      const div = document.createElement("div");
+      div.className = "project-card animate-on-scroll";
+      div.dataset.id = p.id;
+      div.dataset.tags = p.tags.join(",");
+      div.style.cssText = `--card-bg: ${p.theme.background}; --border-color: ${p.theme.borderColor};`;
+      div.innerHTML = `<div class="project-shine"></div>${img}<div class="project-content"><h3 style="color: ${
+        p.theme.titleColor
+      };">${p.title}</h3><p>${
+        p.shortDescription
+      }</p><div class="project-links">${p.links
+        .map(
+          (l) =>
+            `<a href="${l.url}" target="_blank" class="project-btn" style="--btn-bg: ${p.theme.buttonBg}; --btn-color: ${p.theme.buttonColor}; --btn-hover-shadow: ${p.theme.buttonHoverShadow};">${l.text}</a>`
+        )
+        .join("")}</div></div>`;
+      frag.appendChild(div);
+    });
+    container.appendChild(frag);
+  }
+
+  function renderTeamMembers(grid) {
+    if (!grid) return;
+    const frag = document.createDocumentFragment();
+    SITE_CONFIG.team.forEach((m) => {
+      const socials =
+        m.social.length > 0
+          ? `<div class="team-social-links">${m.social
+              .map(
+                (s) =>
+                  `<a href="${s.url}" target="_blank" title="${s.platform}"><i class="${s.icon}"></i></a>`
+              )
+              .join("")}</div>`
+          : "";
+      const div = document.createElement("div");
+      div.className = "team-member-card animate-on-scroll";
+      div.innerHTML = `<div class="member-details"><img src="${m.image}" alt="${m.name}" loading="lazy" width="140" height="140"/><div class="card-content"><h3>${m.name}</h3><p class="role">${m.role}</p><p class="bio">${m.bio}</p></div></div>${socials}`;
+      frag.appendChild(div);
+    });
+    grid.appendChild(frag);
+  }
+
+  function renderFilterButtons(container) {
+    if (!container) return;
+    container.innerHTML = SITE_CONFIG.filterCategories
+      .map(
+        (c) =>
+          `<button class="filter-btn ${
+            c.id === "all" ? "active" : ""
+          }" data-filter="${c.id}">${c.label}</button>`
+      )
+      .join("");
+  }
+
+  function renderFooter(platform, contact, copyright) {
+    if (platform)
+      platform.innerHTML = `
+  <div class="platform-showcase animate-on-scroll">
+    <p class="section-title animate-on-scroll">Find Our Projects On</p>
+    <div class="platform-logos">
+      ${SITE_CONFIG.footer.platforms
+        .map(
+          (p) =>
+            `<a href="${p.url}" class="platform-link animate-on-scroll" target="_blank" title="${p.name}">
+               <img src="${p.logo}" alt="${p.name} Logo" loading="lazy"/>
+             </a>`
+        )
+        .join("")}
+    </div>
+  </div>`;
+    if (contact)
+      contact.innerHTML = `<p class="section-title animate-on-scroll">Get in Touch</p><a href="mailto:${SITE_CONFIG.footer.contact.email}" class="email-link animate-on-scroll">${SITE_CONFIG.footer.contact.email}</a><p class="footer-copyright animate-on-scroll">${SITE_CONFIG.footer.copyright}</p>`;
+    if (copyright) copyright.textContent = SITE_CONFIG.footer.copyright;
+  }
+
+  function setupProjectFiltering(filterContainer, projectsContainer) {
+    if (!filterContainer || !projectsContainer) return;
+    
+    // The decision to use simple vs animated filtering is now made AT CLICK TIME.
+    // This makes the component responsive to window resizing.
+
+    filterContainer.addEventListener("click", (e) => {
+      if (!e.target.matches(".filter-btn")) return;
+      const btn = e.target;
+      const filter = btn.dataset.filter;
+      const showAllBtn = filterContainer.querySelector('[data-filter="all"]');
+      if (filter === "all") {
+        filterContainer
+          .querySelectorAll(".filter-btn.active")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      } else {
+        btn.classList.toggle("active");
+        showAllBtn.classList.remove("active");
+      }
+      const activeFilters = Array.from(
+        filterContainer.querySelectorAll(".filter-btn.active")
+      )
+        .map((b) => b.dataset.filter)
+        .filter((f) => f !== "all");
+      if (activeFilters.length === 0) showAllBtn.classList.add("active");
+      const projectCards = Array.from(
+        projectsContainer.querySelectorAll(".project-card")
+      );
+      
+        applyFilterWithAnimation(activeFilters, projectCards, projectsContainer);
+
+    });
+  }
+
+  function applyFilterWithAnimation(
+    activeFilters,
+    projectCards,
+    projectsContainer
+  ) {
+    // Use a DocumentFragment for better performance
+    const fragment = document.createDocumentFragment();
+
+    // Pre-calculate matches with optimized tag checking
+    const matchMap = new Map();
+    const tagsCache = new Map(
+      projectCards.map((card) => [card, new Set(card.dataset.tags.split(","))])
+    );
+
+    projectCards.forEach((card) => {
+      const tags = tagsCache.get(card);
+      // Match any selected filter (OR). If no filters selected, show all.
+      const isMatch =
+        activeFilters.length === 0 || activeFilters.some((f) => tags.has(f));
+      matchMap.set(card, isMatch);
+    });
+
+    // Batch DOM reads
+    const firstRects = new Map(
+      projectCards.map((card) => [card, card.getBoundingClientRect()])
+    );
+
+    // Group cards by match status for better DOM manipulation
+    const matches = [];
+    const nonMatches = [];
+    projectCards.forEach((card) => {
+      (matchMap.get(card) ? matches : nonMatches).push(card);
+    });
+
+    // Optimize animations with GPU acceleration and better timing
+    const animate = (card, dx, dy) => {
+      if (dx === 0 && dy === 0) return;
+
+      card.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+      card.style.transition = "none";
+      card.style.willChange = "transform";
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Faster, snappier rearrange animation to reduce perceived slowness
+          card.style.transition =
+            "transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)";
+          card.style.transform = "translate3d(0, 0, 0)";
+
+          // Cleanup after animation
+          card.addEventListener(
+            "transitionend",
+            () => {
+              card.style.willChange = "auto";
+            },
+            { once: true }
+          );
         });
-    }
+      });
+    };
 
-    function renderTeamMembers() {
-        const container = document.querySelector('.team-grid');
-        if (!container) return;
-        
-        container.innerHTML = SITE_CONFIG.team.map(member => {
-            const socialLinks = member.social.length > 0 
-                ? `<div class="team-social-links">
-                     ${member.social.map(social => 
-                         `<a href="${social.url}" target="_blank" title="${social.platform}">
-                            <i class="${social.icon}"></i>
-                          </a>`
-                     ).join('')}
-                   </div>`
-                : '';
-            
-            return `
-                <div class="team-member-card animate-on-scroll">
-                    <div class="member-details">
-                        <img src="${member.image}" alt="${member.name}" />
-                        <div class="card-content">
-                            <h3>${member.name}</h3>
-                            <p class="role">${member.role}</p>
-                            <p class="bio">${member.bio}</p>
-                        </div>
-                    </div>
-                    ${socialLinks}
-                </div>
-            `;
-        }).join('');
-    }
+    // Batch DOM writes
+    matches.forEach((card) => {
+      card.classList.remove("hiding");
+      fragment.appendChild(card);
+    });
 
-    function renderFilterButtons() {
-        const container = document.querySelector('.filter-buttons');
-        if (!container) return;
-        
-        container.innerHTML = SITE_CONFIG.filterCategories.map(category => `
-            <button class="filter-btn ${category.id === 'all' ? 'active' : ''}" 
-                    data-filter="${category.id}">
-                ${category.label}
-            </button>
-        `).join('');
-    }
+    nonMatches.forEach((card) => {
+      card.classList.add("hiding");
+      fragment.appendChild(card);
+    });
 
-    function renderFooter() {
-        const platformShowcase = document.querySelector('.platform-showcase');
-        if (platformShowcase) {
-            const linksHtml = SITE_CONFIG.footer.platforms.map(platform => `
-                <a href="${platform.url}" target="_blank" title="${platform.name}">
-                    <img src="${platform.logo}" alt="${platform.name} Logo" />
-                </a>
-            `).join('');
-            platformShowcase.innerHTML = `
-                <p class="section-title">Find Our Projects On</p>
-                ${linksHtml}
-            `;
+    // Single DOM write for all cards
+    projectsContainer.appendChild(fragment);
+
+    // Calculate and apply animations
+    projectCards.forEach((card) => {
+      const first = firstRects.get(card);
+      const last = card.getBoundingClientRect();
+      animate(card, first.left - last.left, first.top - last.top);
+    });
+  }
+
+  function setupLoader(loader) {
+    window.addEventListener("load", () =>
+      setTimeout(() => {
+        if (loader) {
+          loader.classList.add("hidden");
+          document.body.classList.add("loaded");
         }
-        
-        const contactInfo = document.querySelector('.contact-info');
-        if (contactInfo) {
-            contactInfo.innerHTML = `
-                <p class="section-title">Get in Touch</p>
-                <p class="contact-intro">${SITE_CONFIG.footer.contact.intro}</p>
-                <a href="mailto:${SITE_CONFIG.footer.contact.email}" class="email-link">
-                    ${SITE_CONFIG.footer.contact.email}
-                </a>
-            `;
+      }, 500)
+    );
+  }
+
+  function setupMobileNav(toggle, nav) {
+    if (!toggle || !nav) return;
+    // store original place so we can restore later
+    let originalParent = null;
+    let originalNextSibling = null;
+    let overlayEl = null;
+
+    const close = () => {
+      nav.setAttribute("data-visible", "false");
+      toggle.setAttribute("aria-expanded", "false");
+      try { toggle.querySelector("i").className = "fa-solid fa-bars"; } catch(e) {}
+      document.body.style.overflow = "";
+      try { nav.style.zIndex = ''; nav.style.position = ''; nav.style.left = ''; nav.style.top = ''; nav.style.width = ''; nav.style.height = ''; nav.style.visibility = ''; nav.style.opacity = ''; nav.style.pointerEvents = ''; } catch(e) {}
+      try { document.body.classList.remove('nav-open'); } catch(e) {}
+
+      // restore original DOM position if we moved the nav
+      try {
+        if (overlayEl && overlayEl.parentNode) {
+          // remove overlay and restore nav
+          if (originalParent) {
+            if (originalNextSibling && originalNextSibling.parentNode === originalParent) originalParent.insertBefore(nav, originalNextSibling);
+            else originalParent.appendChild(nav);
+          }
+          overlayEl.parentNode.removeChild(overlayEl);
+          overlayEl = null;
+        } else if (originalParent) {
+          if (originalNextSibling && originalNextSibling.parentNode === originalParent) originalParent.insertBefore(nav, originalNextSibling);
+          else originalParent.appendChild(nav);
         }
-        
-        const copyright = document.querySelector('.footer-copyright');
-        if (copyright) {
-            copyright.textContent = SITE_CONFIG.footer.copyright;
-        }
-    }
+      } catch (e) {}
+    };
 
-    function renderHeaderSocial() {
-        const socialGroup = document.querySelector('header .social-group');
-        if (!socialGroup) return;
-        
-        socialGroup.innerHTML = SITE_CONFIG.headerSocial.map(social => `
-            <a href="${social.url}" target="_blank" title="${social.platform}">
-                <i class="${social.icon}"></i>
-            </a>
-        `).join('');
-    }
-
-    function setupEventListeners() {
-        const loader = document.getElementById('loader-overlay');
-        const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-        const primaryNav = document.querySelector('nav');
-        const allNavLinks = document.querySelectorAll('nav a');
-        const sections = document.querySelectorAll('section');
-        const desktopNavLinks = document.querySelectorAll('header nav .nav-links a');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const projectCards = Array.from(document.querySelectorAll('.project-card'));
-        
-        // Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                document.body.classList.add('loaded');
-            }, 500);
-        });
-        
-        // Mobile navigation
-        const closeMenu = () => {
-            primaryNav.setAttribute('data-visible', 'false');
-            mobileNavToggle.setAttribute('aria-expanded', 'false');
-            mobileNavToggle.querySelector('i').className = "fa-solid fa-bars";
-            document.body.style.overflow = '';
-        };
-        
-        mobileNavToggle.addEventListener('click', () => {
-            const isVisible = primaryNav.getAttribute('data-visible') === 'true';
-            if (isVisible) {
-                closeMenu();
-            } else {
-                primaryNav.setAttribute('data-visible', 'true');
-                mobileNavToggle.setAttribute('aria-expanded', 'true');
-                mobileNavToggle.querySelector('i').className = "fa-solid fa-xmark";
-                document.body.style.overflow = 'hidden';
-            }
-        });
-        
-        allNavLinks.forEach(link => link.addEventListener('click', closeMenu));
-        
-        // Scroll-based navigation highlighting
-        window.addEventListener('scroll', () => {
-            let currentSectionId = '';
-            sections.forEach(section => {
-                if (window.pageYOffset >= section.offsetTop - 70) {
-                    currentSectionId = section.id;
-                }
-            });
-            desktopNavLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Project filtering
-        const applyFilter = () => {
-            const projectsContainer = document.querySelector('.projects-container');
-            const activeFilters = Array.from(filterButtons)
-                .filter(btn => btn.classList.contains('active') && btn.dataset.filter !== 'all')
-                .map(btn => btn.dataset.filter);
-            
-            const firstRects = new Map();
-            projectCards.forEach(card => {
-                card.dataset.wasVisible = !card.classList.contains('hiding');
-                firstRects.set(card, card.getBoundingClientRect());
-            });
-            
-            const matches = [];
-            const nonMatches = [];
-            projectCards.forEach(card => {
-                const tags = (card.dataset.tags || '').split(',').map(t => t.trim());
-                const isMatch = activeFilters.length === 0 || activeFilters.some(filter => tags.includes(filter));
-                if (isMatch) matches.push(card);
-                else nonMatches.push(card);
-            });
-            
-            matches.concat(nonMatches).forEach(card => projectsContainer.appendChild(card));
-            
-            projectCards.forEach(card => {
-                const firstRect = firstRects.get(card);
-                const lastRect = card.getBoundingClientRect();
-                const isNowVisible = matches.includes(card);
-                const wasVisible = card.dataset.wasVisible === 'true';
-                const dx = firstRect.left - lastRect.left;
-                const dy = firstRect.top - lastRect.top;
-                
-                if (dx === 0 && dy === 0 && isNowVisible === wasVisible) return;
-                
-                const appearing = isNowVisible && !wasVisible;
-                const disappearing = !isNowVisible && wasVisible;
-                let startTransform = `translate(${dx}px, ${dy}px)`;
-                if (appearing) startTransform += ' scale(0.9)';
-                let endTransform = 'translate(0, 0)';
-                if (disappearing) endTransform += ' scale(0.9)';
-                
-                card.style.transform = startTransform;
-                card.style.opacity = wasVisible ? '1' : '0';
-                card.style.transition = 'none';
-                
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        card.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out';
-                        card.style.transform = endTransform;
-                        card.style.opacity = isNowVisible ? '1' : '0';
-                    });
-                });
-                
-                card.classList.toggle('hiding', !isNowVisible);
-            });
-        };
-        
-        filterButtons.forEach(btn => btn.addEventListener('click', () => {
-            const filter = btn.dataset.filter;
-            if (filter === 'all') {
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            } else {
-                btn.classList.toggle('active');
-                document.querySelector('.filter-btn[data-filter="all"]').classList.remove('active');
-                if (!document.querySelector('.filter-btn.active')) {
-                    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
-                }
-            }
-            applyFilter();
-        }));
-        
-        // Project modal
-        setupProjectModal(projectCards);
-    }
-
-    function setupProjectModal(projectCards) {
-        const modal = document.getElementById('project-modal');
-        const modalTitle = document.getElementById('modal-project-title');
-        const modalVideo = document.getElementById('modal-project-video');
-        const modalGallery = document.getElementById('modal-project-gallery');
-        const modalDescription = document.getElementById('modal-project-description');
-        const modalLinks = document.getElementById('modal-project-links');
-        const modalClose = modal.querySelector('.modal-close-btn');
-        
-        const openModalFromCard = (card) => {
-            modalTitle.textContent = card.dataset.title || '';
-            modalDescription.textContent = card.dataset.description || '';
-            modalLinks.innerHTML = card.dataset.linksHtml || '';
-            modalVideo.innerHTML = '';
-            modalGallery.innerHTML = '';
-            modalVideo.style.display = 'none';
-            modalGallery.classList.add('hidden');
-            
-            const youtubeId = (card.dataset.youtubeId || '').trim();
-            const images = (card.dataset.images || '').split(',').map(s => s.trim()).filter(Boolean);
-            
-            if (youtubeId) {
-                modalVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-                modalVideo.style.display = 'block';
-            } else if (images.length) {
-                modalGallery.innerHTML = images.map(src => `<img src="${src}" alt="Project image">`).join('');
-                modalGallery.classList.remove('hidden');
-            }
-            
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        };
-        
-        const closeModal = () => {
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-            modalVideo.innerHTML = '';
-            modalGallery.innerHTML = '';
-        };
-        
-        projectCards.forEach(card => {
-            card.addEventListener('click', e => {
-                if (!e.target.closest('a.project-btn')) {
-                    openModalFromCard(card);
-                }
-            });
-        });
-        
-        modalClose.addEventListener('click', closeModal);
-        modal.addEventListener('click', e => {
-            if (e.target === modal) closeModal();
-        });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeModal();
-        });
-    }
-
-    function setupAnimations() {
-        const animatedElements = document.querySelectorAll('.animate-on-scroll');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const delay = (Math.random() * 200) + 
-                                (Array.from(entry.target.parentNode.children).indexOf(entry.target) * 100);
-                    entry.target.style.setProperty('--delay', `${delay}ms`);
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        animatedElements.forEach(el => observer.observe(el));
-        
-        // Animation randomization for cards
-        const animatedCards = document.querySelectorAll('.detail-card, .team-member-card');
-        animatedCards.forEach(card => {
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            card.style.setProperty('--rotation-direction', direction);
-            const duration = Math.random() * 5 + 10;
-            const delay = Math.random() * -15;
-            card.style.setProperty('--anim-duration', `${duration}s`);
-            card.style.setProperty('--anim-delay', `${delay}s`);
-        });
-        
-        const socialIcons = document.querySelectorAll('.social-group a, .team-social-links a');
-        socialIcons.forEach(icon => {
-            icon.style.setProperty('--rotation-direction', Math.random() > 0.5 ? 1 : -1);
-            icon.style.willChange = 'transform';
-            icon.style.backfaceVisibility = 'hidden';
-        });
-        
-        const logoContainer = document.querySelector('#main .logo-container');
-        if (logoContainer) {
-            logoContainer.style.setProperty('--rotation-direction', Math.random() > 0.5 ? 1 : -1);
-        }
-        
-        // Start alternating tilt animation
-        const startAlternatingTilt = (el, fallbackMs = 800) => {
-            const cs = window.getComputedStyle(el);
-            let dur = 0;
-            try {
-                const raw = cs.animationDuration || cs.getPropertyValue('animation-duration') || '';
-                if (raw) {
-                    const first = raw.split(',')[0].trim();
-                    if (first.endsWith('ms')) dur = parseFloat(first);
-                    else if (first.endsWith('s')) dur = parseFloat(first) * 1000;
-                }
-            } catch (e) { dur = 0; }
-            
-            const interval = Math.max(200, Math.round(dur || fallbackMs) + Math.round(Math.random() * 200 - 100));
-            
-            if (!el.style.getPropertyValue('--rotation-direction')) {
-                el.style.setProperty('--rotation-direction', '1');
-            }
-            
-            const timer = setInterval(() => {
-                const current = parseFloat(getComputedStyle(el).getPropertyValue('--rotation-direction')) || 1;
-                el.style.setProperty('--rotation-direction', current > 0 ? -1 : 1);
-            }, interval);
-            
-            el._tiltToggleTimer = timer;
-        };
-        
+    toggle.addEventListener("click", () => {
+      const visible = nav.getAttribute("data-visible") === "true";
+      if (visible) {
+        close();
+      } else {
+        // remember original position
+        try { originalParent = nav.parentNode; originalNextSibling = nav.nextSibling; } catch(e) { originalParent = null; originalNextSibling = null; }
+        // create a full-screen overlay and move nav into it to guarantee it's above everything
         try {
-            document.querySelectorAll('.logo-container, .detail-card, .team-member-card, .main-logo').forEach(el => {
-                startAlternatingTilt(el, 1200);
-            });
+          overlayEl = document.createElement('div');
+          overlayEl.id = 'ms-mobile-nav-overlay';
+          overlayEl.style.position = 'fixed';
+          overlayEl.style.left = '0';
+          overlayEl.style.top = '0';
+          overlayEl.style.width = '100vw';
+          overlayEl.style.height = '100vh';
+          overlayEl.style.zIndex = '2147483647';
+          overlayEl.style.background = 'rgba(0,0,0,0.98)';
+          overlayEl.style.display = 'flex';
+          overlayEl.style.flexDirection = 'column';
+          overlayEl.style.alignItems = 'stretch';
+          overlayEl.style.justifyContent = 'flex-start';
+          overlayEl.style.paddingTop = (window.getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '16px');
+          overlayEl.style.overflowY = 'auto';
+          // append overlay and move nav into it
+          document.body.appendChild(overlayEl);
+          overlayEl.appendChild(nav);
         } catch (e) {
-            console.warn('Tilt alternation init failed', e);
+          try { document.body.appendChild(nav); } catch(e) {}
         }
-        
-        socialIcons.forEach(icon => startAlternatingTilt(icon, 500));
+
+        nav.setAttribute("data-visible", "true");
+        toggle.setAttribute("aria-expanded", "true");
+        try { toggle.querySelector("i").className = "fa-solid fa-xmark"; } catch(e) {}
+        document.body.style.overflow = "hidden";
+
+        try { document.body.classList.add('nav-open'); } catch(e) {}
+        try {
+          const firstLink = nav.querySelector('.nav-links a');
+          if (firstLink) firstLink.focus();
+        } catch (e) {}
+      }
+    });
+
+    nav.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") close();
+    });
+  }
+
+  function setupScrollHighlight() {
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(
+      "header nav .nav-links a[href^='#']"
+    );
+    if (!sections.length || !navLinks.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            navLinks.forEach((link) =>
+              link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${id}`
+              )
+            );
+          }
+        });
+      },
+      { rootMargin: "-50% 0px -50% 0px" }
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+
+  function setupProjectModal(modal, container) {
+    if (!modal) return;
+    const m = {
+      title: modal.querySelector("#modal-project-title"),
+      video: modal.querySelector("#modal-project-video"),
+      gallery: modal.querySelector("#modal-project-gallery"),
+      desc: modal.querySelector("#modal-project-description"),
+      links: modal.querySelector("#modal-project-links"),
+    };
+    const open = (card) => {
+      const p = SITE_CONFIG.projects.find(
+        (proj) => proj.id === card.dataset.id
+      );
+      if (!p) return;
+      m.title.textContent = p.title;
+      m.desc.textContent = p.fullDescription;
+      m.links.innerHTML = p.links
+        .map(
+          (l) =>
+            `<a href="${l.url}" target="_blank" class="project-btn" style="${l.style}">${l.text}</a>`
+        )
+        .join("");
+      m.video.innerHTML = "";
+      m.gallery.innerHTML = "";
+      if (p.youtubeId) {
+        m.video.style.display = "block";
+        m.video.innerHTML = `<iframe src="https://www.youtube.com/embed/${p.youtubeId}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+      } else {
+        m.video.style.display = "none";
+      }
+      if (p.galleryImages?.length > 0) {
+        m.gallery.style.display = "grid";
+        m.gallery.innerHTML = p.galleryImages
+          .map(
+            (src) => `<img src="${src}" alt="Project image" loading="lazy"/>`
+          )
+          .join("");
+      } else {
+        m.gallery.style.display = "none";
+      }
+      modal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    };
+    const close = () => {
+      modal.classList.remove("show");
+      document.body.style.overflow = "";
+      m.video.innerHTML = "";
+      m.gallery.innerHTML = "";
+    };
+    container.addEventListener("click", (e) => {
+      const card = e.target.closest(".project-card");
+      if (card && !e.target.closest("a")) {
+        e.preventDefault();
+        open(card);
+      }
+    });
+    modal.querySelector(".modal-close-btn")?.addEventListener("click", close);
+  }
+
+  // --- IMPORTANT: Setup animations and ensure detail-cards are registered ---
+  function setupAnimations() {
+    const anim = window.MerakiAnimations;
+    if (!anim) return;
+    
+    // Observe scroll reveal animations (if available)
+    if (anim.scroll && typeof anim.scroll.observe === "function") {
+      anim.scroll.observe(".animate-on-scroll");
     }
 
-    function setupConsole() {
-        const consoleInput = document.getElementById("console-input");
-        const consoleOutput = document.getElementById("console-output");
-        const consoleBox = document.getElementById("console-logo");
-        
-        if (!consoleInput || !consoleOutput || !consoleBox) return;
-        
-        const focusConsole = () => {
-            consoleInput.focus();
-            const selection = window.getSelection();
-            const range = document.createRange();
-            range.selectNodeContents(consoleInput);
-            range.collapse(false);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        };
-        
-        focusConsole();
-        consoleBox.addEventListener("click", focusConsole);
-        
-        consoleInput.addEventListener("input", () => {
-            if (consoleInput.textContent.length > 40) {
-                consoleInput.textContent = consoleInput.textContent.slice(0, 40);
-                focusConsole();
+    // Auto-reapply when matching elements are added dynamically
+    try {
+      if (typeof MutationObserver !== "undefined" && !anim.__mutationObserver) {
+        const selectorsToWatch = [
+          ".detail-card",
+          ".team-member-card",
+          ".project-card",
+          ".service-card",
+          ".main-logo",
+          ".nav-btn-special",
+        ];
+
+        const mo = new MutationObserver((mutations) => {
+          let found = false;
+          for (const m of mutations) {
+            if (!m.addedNodes) continue;
+            for (const node of m.addedNodes) {
+              if (!(node instanceof Element)) continue;
+              for (const sel of selectorsToWatch) {
+                if (node.matches(sel) || node.querySelector(sel)) {
+                  found = true;
+                  break;
+                }
+              }
+              if (found) break;
             }
+            if (found) break;
+          }
+          if (found) {
+            // Debounced reapply
+            if (anim.__reapplyTimer) clearTimeout(anim.__reapplyTimer);
+            anim.__reapplyTimer = setTimeout(() => {
+              // Check again if we're low-end before applying
+              if (anim.isLowEnd()) return;
+
+              if (
+                anim.subtleFloat &&
+                typeof anim.subtleFloat.apply === "function"
+              ) {
+                anim.subtleFloat.apply(
+                  ".detail-card, .team-member-card, .main-details-container .detail-card"
+                );
+              }
+              if (anim.float && typeof anim.float.apply === "function") {
+                anim.float.apply(
+                  ".project-card, .service-card, .main-logo, .nav-btn-special"
+                );
+              }
+            }, 120);
+          }
         });
-        
-        consoleInput.addEventListener("paste", e => {
-            e.preventDefault();
-            const text = (e.clipboardData || window.clipboardData).getData("text/plain");
-            document.execCommand("insertText", false, text);
-        });
-        
-        const handleCommand = (cmd) => {
-            if (!cmd) return;
-            const [command, ...args] = cmd.split(" ");
-            const argString = args.join(" ");
-            
-            switch (command.toLowerCase()) {
-                case "version":
-                    consoleOutput.textContent = "Meraki Studios: Website | Update 2.0";
-                    break;
-                case "echo":
-                    consoleOutput.textContent = argString;
-                    break;
-                case "seed":
-                    const seed = parseInt(args[0]);
-                    if (!isNaN(seed)) {
-                        const url = new URL(window.location);
-                        url.searchParams.set("seed", seed);
-                        window.location.href = url.toString();
-                    } else {
-                        consoleOutput.textContent = "Invalid seed value.";
-                    }
-                    break;
-                default:
-                    consoleOutput.textContent = `'${command}' is not recognized as an internal or external command.`;
-            }
-        };
-        
-        consoleInput.addEventListener("keydown", e => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                handleCommand(consoleInput.textContent.trim());
-                consoleInput.textContent = "";
-            }
-        });
+
+        mo.observe(document.body, { childList: true, subtree: true });
+        anim.__mutationObserver = mo;
+      }
+    } catch (e) {
+      if (window.__MERAKI_ANIM_DEBUG__)
+        console.debug("[setupAnimations] MutationObserver setup failed", e);
     }
+  }
+
+  // Expose nothing globally
 })();

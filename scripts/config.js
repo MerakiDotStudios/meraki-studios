@@ -228,6 +228,73 @@ const SITE_CONFIG = {
     }
   ],
 
+  services: [
+    {
+      name: "Minecraft Plugin Development",
+      description: "Customized Java plugins for BungeeCord, Paper, or Spigot servers. We create everything according to your server's requirements, from basic tools to complex gameplay mechanics.",
+      image: "images/services/minecraft.png",
+      tags: ["Java", "Development", "Minecraft", "Spigot", "Paper", "BungeeCord", ],
+      availableMembers: ["Abdelaziz Hasaneen", "Omar Mohamed"],
+      isAvailable: true,
+      price: {
+        model: 'dynamic',     // Price varies based on complexity
+        type: 'fixed',     
+        minValue: 120          
+      }
+    },
+    {
+      name: "Custom Discord Bot",
+      description: "Use a custom Discord bot to interact with your community. With a variety of features, we can develop utility bots, game integration bots, moderation bots, and more.",
+      image: "images/services/discord.png",
+      tags: ["Java", "Discord"],
+      availableMembers: ["Abdelaziz Hasaneen", "Omar Mohamed"],
+      isAvailable: true,
+      price: {
+        model: 'dynamic',     // Price varies based on complexity
+        type: 'fixed',     
+        minValue: 60          
+      }
+    },
+    {
+      name: "Digital/Traditional Art",
+      description: "With a unique work of art from our creative studio, realize your vision. Our areas of expertise include producing tangible, traditional artworks as well as excellent digital illustrations.",
+      image: "images/services/art.png",
+      tags: ["Art", "Design"],
+      availableMembers: ["Amezz", "Himari"],
+      isAvailable: true,
+      price: {
+        model: 'dynamic',      // The price is exact
+        type: 'fixed',        // It's a one-time product cost
+        minValue: 50             // The exact cost is 50
+      }
+    },
+    {
+      name: "Games.",
+      description: "We create worlds, not just games. Our studio is a collection of imaginative minds dedicated to creating original adventures, resolving intriguing riddles, and crafting unforgettable tales. Our goal is to produce top-notch games that inspire, challenge, and engage players worldwide.",
+      image: "images/services/games.png",
+      tags: ["Game Design", "Unity", "Unreal Engine", "Art", "Music"],
+      availableMembers: ["Amezz", "Ghost", "Himari", "Omar Mohamed", "Saphielle"],
+      isAvailable: true,
+      price: {
+        model: 'dynamic',     // Price varies based on the project
+        type: 'per_week',      
+        minValue: 1000         
+      }
+    },
+    {
+      name: "Video Editing",
+      description: "Excellent video editing for any project, including short films, promotional videos, social media clips, and YouTube content.",
+      image: "images/services/videos.png",
+      tags: ["Video Editing", "Premiere Pro", "Post-Production", "Content Creation", "Graphic Design", "Typography"],
+      availableMembers: ["Omar Mohamed"],
+      isAvailable: true,
+      price: {
+        model: 'dynamic',     // Price varies based on complexity
+        type: 'fixed',     // It's an hourly rate
+        minValue: 250,         
+      }
+    }
+  ],
 
   // Project Filter Categories
   filterCategories: [
@@ -255,7 +322,6 @@ const SITE_CONFIG = {
     ],
     contact: {
       email: "contact@merakistudios.dev",
-      intro: "Have a question, or just want to say hello? We'd love to hear from you!"
     },
     copyright: "© 2025 Meraki Studios. All Rights Reserved."
   },
