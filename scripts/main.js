@@ -613,9 +613,6 @@
             // Debounced reapply
             if (anim.__reapplyTimer) clearTimeout(anim.__reapplyTimer);
             anim.__reapplyTimer = setTimeout(() => {
-              // Check again if we're low-end before applying
-              if (anim.isLowEnd()) return;
-
               if (
                 anim.subtleFloat &&
                 typeof anim.subtleFloat.apply === "function"

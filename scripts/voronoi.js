@@ -358,16 +358,21 @@
       requestAnimationFrame(render);
     };
 
-    // Event listeners
-    window.addEventListener("mousemove", (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.inside = true;
-    });
+    // Event listeners - mouse only (no touch)
+    // Check if device is non-touch
+    const isNonTouchDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    
+    if (isNonTouchDevice) {
+        window.addEventListener("mousemove", (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.inside = true;
+        });
 
-    document.documentElement.addEventListener("mouseleave", () => {
-      mouse.inside = false;
-    });
+        document.documentElement.addEventListener("mouseleave", () => {
+            mouse.inside = false;
+        });
+    }
     
     // --- REVISED EVENT LISTENERS ---
     
