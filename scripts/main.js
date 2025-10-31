@@ -30,7 +30,7 @@
         headerEl.addEventListener('click', (e) => {
           // If the user clicked an interactive element inside header, ignore
           if (e.target.closest('button, a, input, select')) return;
-          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0,0); }
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
           // close nav if open
           try {
             const nav = document.querySelector('nav');
@@ -38,15 +38,15 @@
             if (nav && nav.getAttribute('data-visible') === 'true') {
               nav.setAttribute('data-visible', 'false');
               if (toggle) toggle.setAttribute('aria-expanded', 'false');
-              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch(e) {}
-              try { nav.style.zIndex = ''; } catch(e) {}
-              try { document.body.classList.remove('nav-open'); } catch(e) {}
+              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch (e) { }
+              try { nav.style.zIndex = ''; } catch (e) { }
+              try { document.body.classList.remove('nav-open'); } catch (e) { }
               document.body.style.overflow = '';
             }
-          } catch (e) {}
+          } catch (e) { }
         });
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // Header logo links: intercept to scroll to top instead of navigating (improves single-page UX)
     try {
@@ -54,7 +54,7 @@
       logoLinks.forEach(link => {
         link.addEventListener('click', (ev) => {
           ev.preventDefault();
-          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0,0); }
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
           // close nav if open
           try {
             const nav = document.querySelector('nav');
@@ -62,15 +62,15 @@
             if (nav && nav.getAttribute('data-visible') === 'true') {
               nav.setAttribute('data-visible', 'false');
               if (toggle) toggle.setAttribute('aria-expanded', 'false');
-              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch(e) {}
-              try { nav.style.zIndex = ''; } catch(e) {}
-              try { document.body.classList.remove('nav-open'); } catch(e) {}
+              try { toggle.querySelector('i').className = 'fa-solid fa-bars'; } catch (e) { }
+              try { nav.style.zIndex = ''; } catch (e) { }
+              try { document.body.classList.remove('nav-open'); } catch (e) { }
               document.body.style.overflow = '';
             }
-          } catch (e) {}
+          } catch (e) { }
         });
       });
-    } catch (e) {}
+    } catch (e) { }
 
     // Non-critical initialization with priority queuing
     if (PERF_CONFIG.useIdleCallback) {
@@ -196,30 +196,58 @@
       .join("");
   }
 
+  // main.js - CORRECTED renderProjects FUNCTION
+
   function renderProjects(container) {
     if (!container) return;
+
     const frag = document.createDocumentFragment();
+
     SITE_CONFIG.projects.forEach((p) => {
-      const img = p.image
-        ? `<div class="project-image" style="background-image: url('${p.image}');"></div>`
-        : `<div class="project-image icon-bg" style="--icon-bg-color: ${p.iconBackground};"><i class="${p.icon}"></i></div>`;
+      // --- THIS IS THE FIX ---
+      // This block now generates the correct HTML structure that matches your new CSS.
+      let imageOrIconHTML = '';
+      if (p.image) {
+        // If there's an image, create a container with an <img> tag inside.
+        imageOrIconHTML = `
+        <div class="project-image-container">
+          <img class="project-image" src="${p.image}" alt="${p.title} Logo" loading="lazy">
+        </div>`;
+      } else if (p.icon) {
+        // If there's an icon, create a container with the 'icon-bg' class and the <i> tag inside.
+        imageOrIconHTML = `
+        <div class="project-image-container icon-bg" style="background-color: ${p.iconBackground || 'rgba(0,0,0,0.25)'};">
+          <i class="${p.icon}"></i>
+        </div>`;
+      }
+      // --- END OF FIX ---
+
       const div = document.createElement("div");
       div.className = "project-card animate-on-scroll";
       div.dataset.id = p.id;
       div.dataset.tags = p.tags.join(",");
       div.style.cssText = `--card-bg: ${p.theme.background}; --border-color: ${p.theme.borderColor};`;
-      div.innerHTML = `<div class="project-shine"></div>${img}<div class="project-content"><h3 style="color: ${
-        p.theme.titleColor
-      };">${p.title}</h3><p>${
-        p.shortDescription
-      }</p><div class="project-links">${p.links
-        .map(
-          (l) =>
-            `<a href="${l.url}" target="_blank" class="project-btn" style="--btn-bg: ${p.theme.buttonBg}; --btn-color: ${p.theme.buttonColor}; --btn-hover-shadow: ${p.theme.buttonHoverShadow};">${l.text}</a>`
-        )
-        .join("")}</div></div>`;
+
+      // The new imageOrIconHTML is injected here.
+      div.innerHTML = `
+      <div class="project-shine"></div>
+      ${imageOrIconHTML}
+      <div class="project-content">
+        <h3 style="color: ${p.theme.titleColor};">${p.title}</h3>
+        <p>${p.shortDescription}</p>
+        <div class="project-links">
+          ${p.links
+          .map(
+            (l) =>
+              `<a href="${l.url}" target="_blank" class="project-btn" style="--btn-bg: ${p.theme.buttonBg}; --btn-color: ${p.theme.buttonColor}; --btn-hover-shadow: ${p.theme.buttonHoverShadow};">${l.text}</a>`
+          )
+          .join("")}
+        </div>
+      </div>`;
+
       frag.appendChild(div);
     });
+
     container.appendChild(frag);
   }
 
@@ -230,11 +258,11 @@
       const socials =
         m.social.length > 0
           ? `<div class="team-social-links">${m.social
-              .map(
-                (s) =>
-                  `<a href="${s.url}" target="_blank" title="${s.platform}"><i class="${s.icon}"></i></a>`
-              )
-              .join("")}</div>`
+            .map(
+              (s) =>
+                `<a href="${s.url}" target="_blank" title="${s.platform}"><i class="${s.icon}"></i></a>`
+            )
+            .join("")}</div>`
           : "";
       const div = document.createElement("div");
       div.className = "team-member-card animate-on-scroll";
@@ -249,8 +277,7 @@
     container.innerHTML = SITE_CONFIG.filterCategories
       .map(
         (c) =>
-          `<button class="filter-btn ${
-            c.id === "all" ? "active" : ""
+          `<button class="filter-btn ${c.id === "all" ? "active" : ""
           }" data-filter="${c.id}">${c.label}</button>`
       )
       .join("");
@@ -263,13 +290,13 @@
     <p class="section-title animate-on-scroll">Find Our Projects On</p>
     <div class="platform-logos">
       ${SITE_CONFIG.footer.platforms
-        .map(
-          (p) =>
-            `<a href="${p.url}" class="platform-link animate-on-scroll" target="_blank" title="${p.name}">
+          .map(
+            (p) =>
+              `<a href="${p.url}" class="platform-link animate-on-scroll" target="_blank" title="${p.name}">
                <img src="${p.logo}" alt="${p.name} Logo" loading="lazy"/>
              </a>`
-        )
-        .join("")}
+          )
+          .join("")}
     </div>
   </div>`;
     if (contact)
@@ -279,7 +306,7 @@
 
   function setupProjectFiltering(filterContainer, projectsContainer) {
     if (!filterContainer || !projectsContainer) return;
-    
+
     // The decision to use simple vs animated filtering is now made AT CLICK TIME.
     // This makes the component responsive to window resizing.
 
@@ -306,8 +333,8 @@
       const projectCards = Array.from(
         projectsContainer.querySelectorAll(".project-card")
       );
-      
-        applyFilterWithAnimation(activeFilters, projectCards, projectsContainer);
+
+      applyFilterWithAnimation(activeFilters, projectCards, projectsContainer);
 
     });
   }
@@ -416,10 +443,10 @@
     const close = () => {
       nav.setAttribute("data-visible", "false");
       toggle.setAttribute("aria-expanded", "false");
-      try { toggle.querySelector("i").className = "fa-solid fa-bars"; } catch(e) {}
+      try { toggle.querySelector("i").className = "fa-solid fa-bars"; } catch (e) { }
       document.body.style.overflow = "";
-      try { nav.style.zIndex = ''; nav.style.position = ''; nav.style.left = ''; nav.style.top = ''; nav.style.width = ''; nav.style.height = ''; nav.style.visibility = ''; nav.style.opacity = ''; nav.style.pointerEvents = ''; } catch(e) {}
-      try { document.body.classList.remove('nav-open'); } catch(e) {}
+      try { nav.style.zIndex = ''; nav.style.position = ''; nav.style.left = ''; nav.style.top = ''; nav.style.width = ''; nav.style.height = ''; nav.style.visibility = ''; nav.style.opacity = ''; nav.style.pointerEvents = ''; } catch (e) { }
+      try { document.body.classList.remove('nav-open'); } catch (e) { }
 
       // restore original DOM position if we moved the nav
       try {
@@ -435,7 +462,7 @@
           if (originalNextSibling && originalNextSibling.parentNode === originalParent) originalParent.insertBefore(nav, originalNextSibling);
           else originalParent.appendChild(nav);
         }
-      } catch (e) {}
+      } catch (e) { }
     };
 
     toggle.addEventListener("click", () => {
@@ -444,7 +471,7 @@
         close();
       } else {
         // remember original position
-        try { originalParent = nav.parentNode; originalNextSibling = nav.nextSibling; } catch(e) { originalParent = null; originalNextSibling = null; }
+        try { originalParent = nav.parentNode; originalNextSibling = nav.nextSibling; } catch (e) { originalParent = null; originalNextSibling = null; }
         // create a full-screen overlay and move nav into it to guarantee it's above everything
         try {
           overlayEl = document.createElement('div');
@@ -466,19 +493,19 @@
           document.body.appendChild(overlayEl);
           overlayEl.appendChild(nav);
         } catch (e) {
-          try { document.body.appendChild(nav); } catch(e) {}
+          try { document.body.appendChild(nav); } catch (e) { }
         }
 
         nav.setAttribute("data-visible", "true");
         toggle.setAttribute("aria-expanded", "true");
-        try { toggle.querySelector("i").className = "fa-solid fa-xmark"; } catch(e) {}
+        try { toggle.querySelector("i").className = "fa-solid fa-xmark"; } catch (e) { }
         document.body.style.overflow = "hidden";
 
-        try { document.body.classList.add('nav-open'); } catch(e) {}
+        try { document.body.classList.add('nav-open'); } catch (e) { }
         try {
           const firstLink = nav.querySelector('.nav-links a');
           if (firstLink) firstLink.focus();
-        } catch (e) {}
+        } catch (e) { }
       }
     });
 
@@ -575,7 +602,7 @@
   function setupAnimations() {
     const anim = window.MerakiAnimations;
     if (!anim) return;
-    
+
     // Observe scroll reveal animations (if available)
     if (anim.scroll && typeof anim.scroll.observe === "function") {
       anim.scroll.observe(".animate-on-scroll");
