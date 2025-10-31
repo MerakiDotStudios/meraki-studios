@@ -1,10 +1,15 @@
 // voronoi.js - Optimized Animated Voronoi diagram background
-
 (function () {
   "use strict";
 
+  // --- MODIFICATION: Global control object ---
+  const control = {
+    rafId: null,
+    isRunning: false,
+  };
+
   // Wait for DOM to be fully loaded and rendered
-  window.addEventListener('load', initVoronoi);
+  window.addEventListener("load", initVoronoi);
 
   function initVoronoi() {
     const canvas = document.getElementById("voronoi-canvas");
@@ -28,18 +33,25 @@
 
     console.log("Voronoi Seed:", SEED);
 
-    // Configuration
+    // Detect mobile devices
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      console.log("[Voronoi] Mobile mode activated - optimized settings enabled");
+    }
+    
+    // Configuration - Optimized for mobile
     const DARK_TEAL = { r: 4, g: 45, b: 55 };
     const BRIGHT_CYAN = { r: 46, g: 255, b: 255 };
-    const VISUAL_FADE_MS = 800;
-    const TRAIL_FADE_MS = 1500;
-    const EFFECT_RADIUS = 200;
+    const VISUAL_FADE_MS = isMobile ? 1200 : 800;
+    const TRAIL_FADE_MS = isMobile ? 2000 : 1500;
+    const EFFECT_RADIUS = isMobile ? 150 : 200;
     const EFFECT_RADIUS_SQ = EFFECT_RADIUS * EFFECT_RADIUS; // Pre-calculate for distance checks
-    const SITE_DENSITY = 6;
-    const STROKE_ALPHA = 0.05;
-    const BASE_INTENSITY = 0.03;
+    const SITE_DENSITY = isMobile ? 4 : 6; // Fewer sites on mobile
+    const STROKE_ALPHA = isMobile ? 0.02 : 0.03;
+    const BASE_INTENSITY = isMobile ? 0.015 : 0.02;
     const RANDOM_GRADIENT = false;
-    const TARGET_FPS = 30;
+    const TARGET_FPS = isMobile ? 20 : 30; // Lower FPS on mobile
     const FRAME_TIME = 1000 / TARGET_FPS;
 
     // Spatial grid for optimized mouse interaction
@@ -189,7 +201,12 @@
       // This prevents the canvas from infinitely expanding the page.
       const newHeight = document.body.scrollHeight;
       const newWidth = document.body.clientWidth; // Use clientWidth to avoid including scrollbar width
-      const newDPR = window.devicePixelRatio || 1;
+      let newDPR = window.devicePixelRatio || 1;
+      
+      // Limit DPR on mobile to reduce memory usage
+      if (isMobile) {
+        newDPR = Math.min(newDPR, 2); // Cap at 2x on mobile
+      }
 
       // Only perform a resize if the dimensions have actually changed
       if (
@@ -204,24 +221,34 @@
       heightPx = newHeight;
       lastDPR = newDPR;
 
+      // Maximum canvas size constraint to prevent errors on mobile
+      const MAX_CANVAS_DIMENSION = 4096;
+      const canvasWidth = Math.min(widthPx * newDPR, MAX_CANVAS_DIMENSION);
+      const canvasHeight = Math.min(heightPx * newDPR, MAX_CANVAS_DIMENSION);
+      const effectiveDPR = Math.min(canvasWidth / widthPx, canvasHeight / heightPx);
+
       // Set container and canvas dimensions
       gridContainer.style.height = `${heightPx}px`;
       gridContainer.style.width = `${widthPx}px`;
       gridContainer.style.overflow = 'hidden'; // Ensure it doesn't create scrollbars
 
-      canvas.width = widthPx * newDPR;
-      canvas.height = heightPx * newDPR;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
       canvas.style.width = `${widthPx}px`;
       canvas.style.height = `${heightPx}px`;
 
-      ctx.setTransform(newDPR, 0, 0, newDPR, 0, 0);
+      ctx.setTransform(effectiveDPR, 0, 0, effectiveDPR, 0, 0);
       generateSitesAndPolygons();
       
-      console.log(`[Voronoi] Resized: ${widthPx}x${heightPx} @ DPR ${newDPR}`);
+      console.log(`[Voronoi] Resized: ${widthPx}x${heightPx} @ DPR ${effectiveDPR.toFixed(2)} (Canvas: ${canvasWidth}x${canvasHeight})`);
     };
 
     // Main render loop
     const render = (now) => {
+      // --- MODIFICATION: Allow loop to be stopped ---
+      if (!control.isRunning) return;
+      control.rafId = requestAnimationFrame(render);
+
       // Optional debug: enable by setting window.__VORONOI_DEBUG__ = true
       const VDEBUG = window.__VORONOI_DEBUG__ ?? false;
       if (VDEBUG && now) {
@@ -236,7 +263,6 @@
       }
       // Frame rate control
       if (now - lastTime < FRAME_TIME) {
-        requestAnimationFrame(render);
         return;
       }
 
@@ -354,12 +380,28 @@
           ctx.stroke();
         }
       }
+    };
 
-      requestAnimationFrame(render);
+    // --- MODIFICATION: Control functions ---
+    control.start = () => {
+      if (control.isRunning) return;
+      console.log("[Voronoi] Starting animation.");
+      control.isRunning = true;
+      lastTime = performance.now(); // Reset timer to prevent jump
+      control.rafId = requestAnimationFrame(render);
+    };
+
+    control.stop = () => {
+      if (!control.isRunning) return;
+      console.log("[Voronoi] Stopping animation.");
+      control.isRunning = false;
+      if (control.rafId) {
+        cancelAnimationFrame(control.rafId);
+        control.rafId = null;
+      }
     };
 
     // Event listeners - mouse only (no touch)
-    // Check if device is non-touch
     const isNonTouchDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     
     if (isNonTouchDevice) {
@@ -375,42 +417,44 @@
     }
     
     // --- REVISED EVENT LISTENERS ---
-    
-    // Use ResizeObserver to reliably detect changes to the body's content size.
-    // This is the most efficient and accurate way to keep the canvas synced.
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(() => {
-        // Debounce resize calls to prevent layout thrashing from rapid-fire changes.
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(resize, 50);
       });
       observer.observe(document.body);
     } else {
-      // Fallback for older browsers
       window.addEventListener("resize", () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(resize, 100);
       });
-      // Periodically check for content changes as a less efficient fallback
       setInterval(resize, 1000);
     }
 
-    // A simple window resize listener is still useful for orientation changes.
     window.addEventListener("orientationchange", () => {
-      setTimeout(resize, 200); // Give orientation change time to settle
+      setTimeout(resize, 200);
     });
     
-    // Cleanup function to prevent memory leaks
     window.addEventListener('beforeunload', () => {
         clearTimeout(resizeTimeout);
+        control.stop();
     });
     
     // Initialize
     setTimeout(() => {
       resize();
-      gridContainer.style.opacity = "1";
+      gridContainer.style.opacity = "0.5";
     }, 100); 
 
-    requestAnimationFrame(render);
+    // Expose control object to the window
+    window.voronoiControl = control;
+    
+    // --- MODIFICATION: Start animation based on main site animations toggle ---
+    const animToggle = document.getElementById('anim-toggle-checkbox');
+    if (animToggle && animToggle.checked) {
+      control.start();
+    } else {
+       console.log("[Voronoi] Animation disabled on initial load.");
+    }
   }
 })();
