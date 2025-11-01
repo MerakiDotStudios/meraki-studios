@@ -122,7 +122,6 @@
     // Using more efficient selectors where possible
     const cache = {
       root: document.documentElement,
-      loader: document.getElementById("loader-overlay"),
       modal: document.getElementById("project-modal"),
       primaryNav: document.querySelector("nav"),
     };
@@ -153,7 +152,6 @@
       document.documentElement.classList.add("no-animations");
     renderStudioDetails(dom.container);
     renderHeaderSocial(dom.socialGroup);
-    setupLoader(dom.loader);
     setupMobileNav(dom.mobileNavToggle, dom.primaryNav);
   }
 
@@ -173,9 +171,11 @@
   function renderStudioDetails(container) {
     if (!container) return;
     const frag = document.createDocumentFragment();
-    SITE_CONFIG.studioDetails.forEach((d) => {
+    SITE_CONFIG.studioDetails.forEach((d, index) => {
       const div = document.createElement("div");
       div.className = "detail-card animate-on-scroll";
+      // Add progressive delay starting from 300ms, with 200ms intervals
+      div.style.setProperty('--delay', `${300 + (index * 200)}ms`);
       div.innerHTML = `<h3>${d.title}</h3><p>${d.description}</p>`;
       frag.appendChild(div);
     });
@@ -420,17 +420,6 @@
       const last = card.getBoundingClientRect();
       animate(card, first.left - last.left, first.top - last.top);
     });
-  }
-
-  function setupLoader(loader) {
-    window.addEventListener("load", () =>
-      setTimeout(() => {
-        if (loader) {
-          loader.classList.add("hidden");
-          document.body.classList.add("loaded");
-        }
-      }, 500)
-    );
   }
 
   function setupMobileNav(toggle, nav) {
