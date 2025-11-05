@@ -209,6 +209,13 @@ const SITE_CONFIG = {
       image: "images/amezzpic.jpg",
       social: []
     },
+     {
+      "name": "Yacu",
+      "role": "3D & 2D Artist",
+      "bio": "\"It can never be perfect, but it can always be better\"",
+      "image": "images/Yacupfp.png",
+      "social": []
+    },
     {
       name: "Himari",
       role: "Visual Artist (Traditional + Digital)",
