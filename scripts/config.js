@@ -183,7 +183,7 @@ const SITE_CONFIG = {
     },
     {
       name: "Ghost",
-      role: "Co-Founder of Meraki Studios",
+      role: "Founder of Meraki Studios",
       bio: "Mixing pixels and beats since deadlines became a personality trait.",
       image: "images/ghostpic.jpg",
       note: "A Music Producer", // Added note
