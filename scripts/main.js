@@ -27,6 +27,8 @@
     filterButtons: null,
     navSocial: null,
     platformLinks: null,
+    bottomNav: null,
+    bottomNavLinks: null,
   };
 
   // ===================================
@@ -55,6 +57,8 @@
     DOM.filterButtons = document.querySelector(".filter-buttons");
     DOM.navSocial = document.querySelector(".nav-social");
     DOM.platformLinks = document.querySelector(".platform-links");
+    DOM.bottomNav = document.querySelector(".bottom-nav");
+    DOM.bottomNavLinks = document.querySelectorAll(".bottom-nav a");
   }
 
   // ===================================
@@ -203,6 +207,14 @@
       const href = link.getAttribute("href").slice(1);
       link.classList.toggle("active", href === sectionId);
     });
+
+    // Also update bottom nav
+    if (DOM.bottomNavLinks) {
+      DOM.bottomNavLinks.forEach((link) => {
+        const section = link.dataset.section;
+        link.classList.toggle("active", section === sectionId);
+      });
+    }
   }
 
   // ===================================
@@ -214,6 +226,7 @@
     renderTeam();
     renderFilters();
     renderPlatforms();
+    initBottomNav();
     // Re-initialize scroll reveal after all content is rendered
     setTimeout(() => initScrollReveal(), 100);
   }
@@ -232,16 +245,21 @@
         const imageClass = p.image ? "project-image" : "project-image icon-bg";
         const bgStyle = p.iconBackground ? `background-color: ${p.iconBackground};` : "";
 
+        const tagBadges = p.tags
+          .map((t) => `<span class="project-tag-badge">${t}</span>`)
+          .join("");
+
         return `
           <div class="project-card scroll-reveal" 
                data-id="${p.id}" 
                data-tags="${p.tags.join(",")}"
-               style="--reveal-delay: ${index * 100}ms;">
+               style="--reveal-delay: ${index * 100}ms; --card-theme-color: ${p.theme.borderColor}; --card-theme-glow: ${p.theme.background};">
             <div class="${imageClass}" style="${bgStyle}">
               ${imageContent}
             </div>
             <div class="project-info">
               <h3 style="color: ${p.theme.titleColor};">${p.title}</h3>
+              <div class="project-tags">${tagBadges}</div>
               <p>${p.shortDescription}</p>
               <div class="project-links">
                 ${p.links
@@ -252,6 +270,9 @@
                           onclick="event.stopPropagation();">${l.text}</a>`
             )
             .join("")}
+                ${p.pageUrl ? `<a href="${p.pageUrl}" class="project-btn" 
+                          style="--btn-bg: transparent; --btn-color: ${p.theme.titleColor}; --btn-hover-shadow: ${p.theme.buttonHoverShadow}; border: 1px solid ${p.theme.titleColor};"
+                          onclick="event.stopPropagation();">View Project <span class="arrow-icon">→</span></a>` : ""}
               </div>
             </div>
           </div>
@@ -260,9 +281,6 @@
       .join("");
 
     DOM.projectsGrid.innerHTML = html;
-
-    // Observe new elements
-    initScrollReveal();
   }
 
   function renderTeam() {
@@ -376,7 +394,7 @@
           (l) =>
             `<a href="${l.url}" target="_blank" class="project-btn" style="${l.style}">${l.text}</a>`
         )
-        .join("");
+        .join("") + (project.pageUrl ? `<a href="${project.pageUrl}" class="project-btn" style="background: transparent; border: 1px solid ${project.theme.titleColor}; color: ${project.theme.titleColor};">View Details →</a>` : "");
 
       // Show modal
       DOM.modal.classList.add("show");
@@ -498,6 +516,25 @@
       requestAnimationFrame(() => {
         card.style.transition = "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease";
         card.style.transform = "";
+      });
+    });
+  }
+
+  // ===================================
+  // BOTTOM NAV (MOBILE)
+  // ===================================
+
+  function initBottomNav() {
+    if (!DOM.bottomNav) return;
+
+    DOM.bottomNavLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetId = link.dataset.section;
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
       });
     });
   }
