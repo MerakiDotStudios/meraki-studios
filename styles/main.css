@@ -266,6 +266,11 @@ a {
   width: auto;
 }
 
+/* Desktop: show icon, hide full logo */
+.header-logo-full {
+  display: none;
+}
+
 .main-nav {
   display: flex;
   align-items: center;
@@ -1097,17 +1102,36 @@ a {
 
 @media (max-width: 768px) {
   :root {
-    --section-padding: 40px;
+    --section-padding: 30px;
   }
 
-  /* Header - hide top nav on mobile, keep logo centered */
+  /* App-like body */
+  body {
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Header - compact app bar */
+  .glass-header {
+    padding: 0;
+  }
+
   .header-inner {
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
     justify-content: center;
   }
 
+  .header-logo-icon {
+    display: none;
+  }
+
+  .header-logo-full {
+    display: block;
+    height: 36px;
+  }
+
   .header-logo {
-    height: 32px;
+    height: 50px;
   }
 
   /* Hide hamburger toggle - replaced by bottom bar */
@@ -1128,12 +1152,12 @@ a {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-top: 1px solid var(--glass-border);
-    padding: 0.5rem 0;
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    padding: 0.4rem 0;
+    padding-bottom: max(0.4rem, env(safe-area-inset-bottom));
     justify-content: space-around;
     align-items: center;
   }
@@ -1142,41 +1166,46 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.4rem 0.75rem;
-    border-radius: 12px;
+    gap: 0.2rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10px;
     color: var(--text-muted);
-    font-size: 0.65rem;
-    font-weight: 500;
+    font-size: 0.6rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s ease;
+    letter-spacing: 0.04em;
+    transition: color 0.2s ease;
     -webkit-tap-highlight-color: transparent;
   }
 
   .bottom-nav a i {
-    font-size: 1.2rem;
-    transition: all 0.3s var(--transition-bounce);
+    font-size: 1.15rem;
+    transition: all 0.25s ease;
   }
 
-  .bottom-nav a.active,
-  .bottom-nav a:active {
+  .bottom-nav a.active {
     color: var(--accent);
   }
 
   .bottom-nav a.active i {
-    transform: scale(1.15);
+    transform: scale(1.1);
     filter: drop-shadow(0 0 6px var(--accent-glow));
   }
 
-  /* Add bottom padding to body so content doesn't hide behind bottom nav */
+  /* Scroll container — no snap on mobile for natural app scrolling */
   .scroll-container {
-    scroll-snap-type: y proximity;
-    padding-bottom: 70px;
+    scroll-snap-type: none;
+    padding-bottom: 72px;
+  }
+
+  /* Sections — remove snap & min-height so they flow naturally */
+  .snap-section {
+    min-height: auto;
+    scroll-snap-align: none;
   }
 
   .footer-section {
-    padding-bottom: 70px;
+    padding-bottom: 72px;
   }
 
   /* Hero Section */
@@ -1273,14 +1302,17 @@ a {
     border-radius: 12px;
   }
 
-  /* Projects */
+  /* Projects - full-bleed scrollable filter bar */
   .filter-bar {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding: 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 0 0.5rem;
+    justify-content: flex-start;
   }
 
   .filter-bar::-webkit-scrollbar {
@@ -1288,26 +1320,37 @@ a {
   }
 
   .filter-buttons {
+    display: inline-flex;
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 16px;
-    width: max-content;
-    min-width: 100%;
+    gap: 0.4rem;
+    padding: 0.4rem 1rem;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    backdrop-filter: none;
+    width: auto;
+    min-width: max-content;
   }
 
   .filter-btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    border-radius: 20px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.75rem;
+    border-radius: 50px;
     white-space: nowrap;
     flex-shrink: 0;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
   }
 
   .projects-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .project-card {
@@ -1758,18 +1801,21 @@ a {
   transition: width 0.4s ease, height 0.4s ease;
 }
 
-.filter-btn:hover::after {
-  width: 200%;
-  height: 200%;
-}
+/* Only apply hover transforms on devices with a real pointer (not touch) */
+@media (hover: hover) and (pointer: fine) {
+  .filter-btn:hover::after {
+    width: 200%;
+    height: 200%;
+  }
 
-.filter-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px -8px var(--accent-glow);
+  .filter-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px -8px var(--accent-glow);
+  }
 }
 
 .filter-btn.active {
-  animation: pulse-glow 2s ease-in-out infinite;
+  box-shadow: 0 4px 15px -5px var(--accent-glow);
 }
 
 /* Enhanced Footer Links */
