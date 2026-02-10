@@ -15,6 +15,10 @@
     root.style.setProperty("--project-color-secondary", project.theme.borderColor);
     root.style.setProperty("--project-color-alpha", project.theme.background);
 
+    // Determine if icon text should be dark for light-colored themes
+    const iconColor = isLightColor(project.theme.titleColor) ? "#000" : "#fff";
+    root.style.setProperty("--project-icon-color", iconColor);
+
     // Populate hero
     populateHero(project);
 
@@ -258,5 +262,16 @@
       document.head.appendChild(metaDesc);
     }
     metaDesc.content = project.fullDescription;
+  }
+
+  function isLightColor(hex) {
+    hex = hex.replace("#", "");
+    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+    // Relative luminance (WCAG)
+    const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    return luminance > 0.6;
   }
 })();
