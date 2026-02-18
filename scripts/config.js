@@ -299,73 +299,7 @@ const SITE_CONFIG = {
         buttonColor: "var(--text-color)",
         buttonHoverShadow: "#e50914",
       },
-    },
-    {
-      id: "polyact",
-      title: "PolyAct",
-      shortDescription:
-        "An educational platform ensuring quality education across the globe.",
-      fullDescription:
-        "PolyAct is an educational platform available on both mobile and web browsers. Our mission is to ensure quality education across the globe by focusing on both hard skills and soft skills. PolyAct combines expert-led courses, direct support from verified course masters, an AI-powered chatbot for accessibility, and strong AI + human moderation for safety — creating a trusted learning environment for all ages.",
-      tags: ["tool", "sdg", "software"],
-      image: "images/polyact.png",
-      pageUrl: "projects/polyact.html",
-      youtubeId: "",
-      galleryImages: [],
-      links: [
-        {
-          text: "Coming Soon",
-          url: "#",
-          style: "background: #361A5D; color: #ffffff;",
-        },
-      ],
-      features: [
-        {
-          icon: "fa-solid fa-chalkboard-user",
-          title: "Expert Course Masters",
-          description:
-            "Learn from verified experts who create high-quality courses and provide direct guidance.",
-        },
-        {
-          icon: "fa-solid fa-robot",
-          title: "AI-Powered Chatbot",
-          description:
-            "Free AI assistant for all users, ensuring learning remains accessible to everyone.",
-        },
-        {
-          icon: "fa-solid fa-shield-halved",
-          title: "Safety & Moderation",
-          description:
-            "Dual AI + human moderation system to ensure a secure, trustworthy learning environment.",
-        },
-        {
-          icon: "fa-solid fa-mobile-screen-button",
-          title: "Multi-Platform",
-          description:
-            "Available on both mobile phones and web browsers for learning anywhere.",
-        },
-        {
-          icon: "fa-solid fa-brain",
-          title: "Hard & Soft Skills",
-          description:
-            "Comprehensive courses covering both technical skills and communication abilities.",
-        },
-        {
-          icon: "fa-solid fa-globe",
-          title: "Global Accessibility",
-          description:
-            "Quality education designed to reach learners of all ages and backgrounds worldwide.",
-        },
-      ],
-      theme: {
-        background: "#361A5D2c",
-        borderColor: "#274185",
-        titleColor: "#7c5cbf",
-        buttonBg: "#361A5D",
-        buttonColor: "#ffffff",
-        buttonHoverShadow: "#361A5D",
-      },
-    },
+    }
   ],
 
   // Team Members
