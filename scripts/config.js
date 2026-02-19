@@ -541,8 +541,7 @@ const SITE_CONFIG = {
     ],
     contact: {
       email: "contact@merakistudios.dev",
-    },
-    copyright: "© 2026 Meraki Studios. All Rights Reserved.",
+    }
   },
 
   // Header Social Links
