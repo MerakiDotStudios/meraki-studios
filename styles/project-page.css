@@ -23,12 +23,22 @@ body {
 }
 
 /* ===================================
-   HEADER SCROLL EFFECT
+   HEADER — TRANSPARENT & SCROLLS WITH PAGE
    =================================== */
 
-.glass-header.scrolled {
-  background: rgba(0, 0, 0, 0.95);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+.glass-header {
+  position: absolute;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.header-inner {
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* ===================================
@@ -572,7 +582,6 @@ body {
 
 .project-nav-link.next {
   text-align: right;
-  margin-left: auto;
 }
 
 .project-nav-label {
