@@ -399,14 +399,6 @@ const SITE_CONFIG = {
       social: [],
     },
     {
-      name: "Himari",
-      role: "Visual Artist (Traditional + Digital)",
-      bio: "No artist tolerates reality.",
-      image: "images/himaripic.jpg",
-      note: "Specialized in Traditional Art", // Added note
-      social: [],
-    },
-    {
       name: "Youssef7Y",
       role: "Story Producer",
       bio: "I may not have a specific profession, but I'm good at what i know",
