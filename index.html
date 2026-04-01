@@ -1,233 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meraki Studios</title>
+  <meta charset="UTF-8">
+  <title>Meraki Studios...</title>
+  <style>
+    /* intentionally bad and goofy CSS */
+    body {
+      font-family: "Comic Sans MS", "Chalkboard SE", sans-serif;
+      background-color: #f0f8ff;
+      background-image: repeating-linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow), repeating-linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
 
-  <link rel="icon" href="images/watermark.png" type="image/png" />
-  <meta name="description"
-    content="The Official Organization where a bunch of Nerds create limitless projects. Our goal Is to get bigger and bigger make more projects from Software, Music and Games or even Animations all together to bring more for the audience and show what are we actually capable of." />
-  <meta name="theme-color" content="#000000" />
+    .header-goofy {
+      background: pink;
+      border: 5px dashed limegreen;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transform: rotate(-2deg);
+      box-shadow: 10px 10px 0px blue;
+      margin-bottom: 50px;
+    }
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      list-style-type: none;
+      padding: 0;
+    }
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles/main.css" />
+    .nav-links a {
+      color: red;
+      text-decoration: underline overline;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: yellow;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      padding: 10px;
+      transition: all 0.1s;
+      display: inline-block;
+      border: 3px solid black;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.5) rotate(10deg);
+      background-color: cyan;
+      color: magenta;
+    }
+
+    section {
+      margin: 50px auto;
+      padding: 20px;
+      max-width: 900px;
+      background: white;
+      border: 8px solid black;
+      border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* goofy hand-drawn border */
+      box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      background: #ffaa00;
+      color: blue;
+      transform: rotate(1deg);
+    }
+    .hero h1 {
+      font-size: 80px;
+      text-shadow: 5px 5px 0px red;
+      margin: 0;
+      animation: rainbow 2s infinite;
+    }
+    
+    @keyframes rainbow {
+      0% { color: red; }
+      20% { color: orange; }
+      40% { color: yellow; }
+      60% { color: green; }
+      80% { color: blue; }
+      100% { color: red; }
+    }
+
+    .hero-img {
+      width: 300px;
+      border: 10px dotted purple;
+      border-radius: 50%;
+      animation: spinny 5s linear infinite;
+      margin: 20px 0;
+    }
+    @keyframes spinny { 100% { transform: rotate(360deg); } }
+
+    /* Philosophy */
+    .philosophy-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .philosophy-grid > div {
+      background: cyan;
+      border: 4px dashed magenta;
+      padding: 15px;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      transition: transform 0.2s;
+    }
+    .philosophy-grid > div:hover {
+      transform: skewX(-15deg);
+      background-color: pink;
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .project-card {
+      border: 6px double black;
+      padding: 15px;
+      text-align: center;
+    }
+    .project-card:nth-child(odd) {
+      transform: rotate(-3deg);
+      background: #ffb6c1;
+    }
+    .project-card:nth-child(even) {
+      transform: rotate(4deg);
+      background: #98fb98;
+    }
+    .project-card h3 {
+      color: blue;
+      font-size: 30px;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-top: 0;
+    }
+
+    /* Team */
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .team-card {
+      background: yellow;
+      border: 4px solid black;
+      width: 200px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 10px 10px 0px gray;
+      border-radius: 10px;
+    }
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 10%;
+      object-fit: cover;
+      filter: sepia(100%) saturate(300%) hue-rotate(90deg);
+      border: 5px ridge pink;
+    }
+
+    marquee {
+      font-size: 40px;
+      font-weight: bold;
+      color: white;
+      background: red;
+      padding: 10px;
+      border: 3px solid black;
+    }
+  </style>
 </head>
-
 <body>
-  <!-- Cinematic Background -->
-  <div class="cinematic-bg">
-    <div class="gradient-orb orb-1"></div>
-    <div class="gradient-orb orb-2"></div>
-    <div class="gradient-orb orb-3"></div>
-    <canvas id="voronoi-canvas"></canvas>
+
+  <div class="header-goofy">
+    <marquee scrollamount="25">WELCOME TO MERAKI STUDIOS (THE REALLY GOOD VERSION) 🚀 WOW SUCH DESIGN 🐶</marquee>
+    <nav class="nav-links">
+      <a href="#hero">STUDIO??</a>
+      <a href="#philosophy">ABOUT US!!</a>
+      <a href="#projects">COOL STUFF</a>
+      <a href="#team">THE GANG</a>
+    </nav>
   </div>
 
-  <!-- Navigation -->
-  <header class="glass-header">
-    <div class="header-inner">
-      <a href="#" class="logo-link">
-        <img src="images/LargeLogoNoBG.png" alt="Meraki Studios" class="header-logo header-logo-icon" />
-      </a>
-      <nav class="main-nav" data-visible="false">
-        <div class="nav-links">
-          <a href="#hero" class="active">STUDIO</a>
-          <a href="#philosophy">ABOUT</a>
-          <a href="#projects">PROJECTS</a>
-          <a href="#team">TEAM</a>
-        </div>
-        <div class="nav-social">
-          <!-- Rendered by JS -->
-        </div>
-      </nav>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <section id="hero" class="hero">
+    <h1>mEraKi StUdiOs</h1>
+    <img src="images/LargeLogoNoBG.png" alt="logo" class="hero-img">
+    <h2>Where crayons meet code!!!!!</h2>
+    <p>WE ARE A BUNCH OF NERDS!! XD</p>
+    <button onclick="alert('U CLICKED IT!! HERE HAVE A COOKIE 🍪')" style="font-size: 30px; font-weight: bold; background: lime; color: red; border: 10px outset orange; cursor: crosshair; padding: 20px; border-radius: 50%;">SCROLL DOWN (or click me)</button>
+  </section>
+
+  <section id="philosophy">
+    <h2 style="font-size: 50px; text-decoration: underline wavy blue;"><strike>Our Philosophy</strike> Why we do things</h2>
+    <div class="philosophy-grid" id="philo-container">
+      <!-- filled by js -->
     </div>
-  </header>
+  </section>
 
-  <!-- Scroll Container -->
-  <main class="scroll-container">
+  <section id="projects">
+    <h2 style="font-size: 50px; color: purple; text-shadow: 2px 2px 0px yellow;">Look at these Projects ^_^</h2>
+    
+    <!-- Goofy Filters! -->
+    <div id="filter-bar" style="text-align:center; margin-bottom: 30px;">
+      <button class="goofy-filter active" data-filter="all" style="background:cyan; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">ALL STUFF</button>
+      <button class="goofy-filter" data-filter="mc" style="background:lime; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">MINECRAFT</button>
+      <button class="goofy-filter" data-filter="tool" style="background:pink; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">TOOLS</button>
+    </div>
 
-    <!-- Hero Section -->
-    <section id="hero" class="snap-section hero-section">
-      <div class="section-content">
-        <div class="hero-content">
-          <div class="hero-logo-wrapper scroll-reveal">
-            <svg width="684" height="97" viewBox="0 0 684 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip0_21_3)">
-                <path
-                  d="M65.93 7.57499H76.095V85H65.93V33.13L43.605 85H36.1L13.68 33.13V85H3.61V7.57499H13.68L39.805 68.185L65.93 7.57499ZM91.9452 33.32C97.8985 27.3667 105.055 24.39 113.415 24.39C121.775 24.39 128.9 27.3667 134.79 33.32C140.743 39.21 143.72 46.335 143.72 54.695C143.72 56.2783 143.562 57.9567 143.245 59.73H98.6902V49.66H132.985C131.908 45.2267 129.533 41.585 125.86 38.735C122.25 35.885 118.102 34.46 113.415 34.46C107.715 34.46 102.902 36.455 98.9752 40.445C95.1118 44.435 93.1802 49.185 93.1802 54.695C93.1802 60.205 95.1118 64.955 98.9752 68.945C102.902 72.8717 107.715 74.835 113.415 74.835C119.305 74.835 124.213 72.7133 128.14 68.47H140.395C137.798 73.4733 134.093 77.495 129.28 80.535C124.467 83.5117 119.178 85 113.415 85C105.055 85 97.8985 82.055 91.9452 76.165C86.0552 70.2117 83.1102 63.055 83.1102 54.695C83.1102 46.335 86.0552 39.21 91.9452 33.32ZM150.654 54.695C150.654 46.335 153.599 39.21 159.489 33.32C165.379 27.3667 172.504 24.39 180.864 24.39V34.46C175.29 34.46 170.54 36.455 166.614 40.445C162.687 44.3717 160.724 49.1217 160.724 54.695V85H150.654V54.695ZM242.062 54.695V85H231.992V54.695C231.992 49.1217 229.997 44.3717 226.007 40.445C222.081 36.455 217.331 34.46 211.757 34.46C206.184 34.46 201.434 36.455 197.507 40.445C193.581 44.3717 191.617 49.1217 191.617 54.695C191.617 60.2683 193.581 65.0183 197.507 68.945C201.434 72.8717 206.184 74.835 211.757 74.835C218.091 74.835 223.252 72.4283 227.242 67.615V80.725C222.366 83.575 217.204 85 211.757 85C203.397 85 196.241 82.055 190.287 76.165C184.397 70.2117 181.452 63.055 181.452 54.695C181.452 46.335 184.397 39.21 190.287 33.32C196.241 27.3667 203.397 24.39 211.757 24.39C220.117 24.39 227.242 27.3667 233.132 33.32C239.086 39.21 242.062 46.335 242.062 54.695ZM261.752 7.57499V52.51L282.272 24.39H294.812L273.912 52.985L297.282 85H284.742L261.752 53.555V85H251.682V7.57499H261.752ZM303.27 24.39H313.34V85H303.27V24.39ZM304.695 9.095C305.709 8.08166 306.912 7.57499 308.305 7.57499C309.699 7.57499 310.87 8.08166 311.82 9.095C312.834 10.045 313.34 11.2167 313.34 12.61C313.34 14.0033 312.834 15.2067 311.82 16.22C310.87 17.17 309.699 17.645 308.305 17.645C306.912 17.645 305.709 17.17 304.695 16.22C303.745 15.2067 303.27 14.0033 303.27 12.61C303.27 11.2167 303.745 10.045 304.695 9.095ZM353.551 61.82H363.621C363.621 65.43 364.825 68.5017 367.231 71.035C369.701 73.5683 372.678 74.835 376.161 74.835C379.645 74.835 382.59 73.5683 384.996 71.035C387.466 68.5017 388.701 65.43 388.701 61.82C388.701 59.4133 388.1 57.355 386.896 55.645C385.756 53.8717 384.236 52.4783 382.336 51.465C380.436 50.4517 378.346 49.5017 376.066 48.615C373.786 47.7283 371.475 46.7467 369.131 45.67C366.851 44.53 364.761 43.2633 362.861 41.87C360.961 40.4133 359.41 38.45 358.206 35.98C357.066 33.4467 356.496 30.5017 356.496 27.145C356.496 21.7617 358.396 17.17 362.196 13.37C366.06 9.50666 370.715 7.57499 376.161 7.57499C381.608 7.57499 386.231 9.50666 390.031 13.37C393.895 17.17 395.826 21.7617 395.826 27.145H385.661C385.661 24.5483 384.711 22.3317 382.811 20.495C380.975 18.595 378.758 17.645 376.161 17.645C373.501 17.645 371.253 18.595 369.416 20.495C367.58 22.3317 366.661 24.5483 366.661 27.145C366.661 29.995 367.77 32.37 369.986 34.27C372.203 36.1067 374.863 37.6267 377.966 38.83C381.133 39.97 384.268 41.3 387.371 42.82C390.538 44.2767 393.23 46.62 395.446 49.85C397.663 53.0167 398.771 57.0067 398.771 61.82C398.771 68.2167 396.555 73.695 392.121 78.255C387.751 82.7517 382.431 85 376.161 85C369.891 85 364.54 82.7517 360.106 78.255C355.736 73.695 353.551 68.2167 353.551 61.82ZM410.222 64.765V34.745H402.717V24.675H410.222V7.57499H420.387V24.675H428.272V34.745H420.387V64.765C420.387 67.5517 421.369 69.9583 423.332 71.985C425.295 73.9483 427.67 74.93 430.457 74.93H433.687V85H430.457C424.884 85 420.102 83.0367 416.112 79.11C412.185 75.12 410.222 70.3383 410.222 64.765ZM486.206 24.39V61.44C486.206 67.9 483.895 73.4417 479.271 78.065C474.648 82.6883 469.106 85 462.646 85C456.186 85 450.645 82.6883 446.021 78.065C441.398 73.3783 439.086 67.8367 439.086 61.44V24.39H449.156V61.44C449.156 65.1133 450.486 68.28 453.146 70.94C455.806 73.5367 458.973 74.835 462.646 74.835C466.32 74.835 469.486 73.5367 472.146 70.94C474.806 68.28 476.136 65.1133 476.136 61.44V24.39H486.206ZM553.876 54.695C553.876 63.055 550.899 70.2117 544.946 76.165C539.056 82.055 531.931 85 523.571 85C515.211 85 508.054 82.055 502.101 76.165C496.211 70.2117 493.266 63.055 493.266 54.695C493.266 46.335 496.211 39.21 502.101 33.32C508.054 27.3667 515.211 24.39 523.571 24.39C529.144 24.39 534.306 25.7833 539.056 28.57V41.68C535.003 36.8667 529.841 34.46 523.571 34.46C517.998 34.46 513.216 36.4233 509.226 40.35C505.299 44.2767 503.336 49.0583 503.336 54.695C503.336 60.2683 505.299 65.0183 509.226 68.945C513.216 72.8717 517.998 74.835 523.571 74.835C529.144 74.835 533.894 72.8717 537.821 68.945C541.748 65.0183 543.711 60.2683 543.711 54.695V7.57499H553.876V54.695ZM562.016 24.39H572.086V85H562.016V24.39ZM563.441 9.095C564.454 8.08166 565.657 7.57499 567.051 7.57499C568.444 7.57499 569.616 8.08166 570.566 9.095C571.579 10.045 572.086 11.2167 572.086 12.61C572.086 14.0033 571.579 15.2067 570.566 16.22C569.616 17.17 568.444 17.645 567.051 17.645C565.657 17.645 564.454 17.17 563.441 16.22C562.491 15.2067 562.016 14.0033 562.016 12.61C562.016 11.2167 562.491 10.045 563.441 9.095ZM587.627 33.32C593.58 27.3667 600.737 24.39 609.097 24.39C617.457 24.39 624.582 27.3667 630.472 33.32C636.425 39.21 639.402 46.335 639.402 54.695C639.402 63.055 636.425 70.2117 630.472 76.165C624.582 82.055 617.457 85 609.097 85C600.737 85 593.58 82.055 587.627 76.165C581.737 70.2117 578.792 63.055 578.792 54.695C578.792 46.335 581.737 39.21 587.627 33.32ZM623.347 40.445C619.42 36.455 614.67 34.46 609.097 34.46C603.524 34.46 598.742 36.455 594.752 40.445C590.825 44.3717 588.862 49.1217 588.862 54.695C588.862 60.2683 590.825 65.0183 594.752 68.945C598.742 72.8717 603.524 74.835 609.097 74.835C614.67 74.835 619.42 72.8717 623.347 68.945C627.337 65.0183 629.332 60.2683 629.332 54.695C629.332 49.1217 627.337 44.3717 623.347 40.445ZM680.052 66.475C680.052 71.5417 678.247 75.9117 674.637 79.585C671.027 83.195 666.657 85 661.527 85C656.461 85 652.122 83.2267 648.512 79.68C644.902 76.07 643.066 71.7317 643.002 66.665H653.072C653.199 68.945 654.054 70.8767 655.637 72.46C657.284 74.0433 659.247 74.835 661.527 74.835C663.871 74.835 665.866 74.0433 667.512 72.46C669.159 70.8133 669.982 68.8183 669.982 66.475C669.982 64.2583 669.127 62.4217 667.417 60.965C665.771 59.445 663.744 58.21 661.337 57.26C658.994 56.2467 656.619 55.17 654.212 54.03C651.869 52.8267 649.842 51.085 648.132 48.805C646.486 46.4617 645.662 43.58 645.662 40.16C645.662 35.79 647.214 32.085 650.317 29.045C653.421 25.9417 657.157 24.39 661.527 24.39C665.897 24.39 669.634 25.9417 672.737 29.045C675.841 32.085 677.392 35.79 677.392 40.16H667.227C667.227 38.5767 666.657 37.2467 665.517 36.17C664.441 35.03 663.111 34.46 661.527 34.46C659.944 34.46 658.582 35.03 657.442 36.17C656.366 37.2467 655.827 38.5767 655.827 40.16C655.827 41.9333 656.651 43.4533 658.297 44.72C660.007 45.9233 662.034 47 664.377 47.95C666.784 48.8367 669.159 49.9133 671.502 51.18C673.846 52.4467 675.841 54.3783 677.487 56.975C679.197 59.5083 680.052 62.675 680.052 66.475Z"
-                  fill="white" />
-              </g>
-              <defs>
-                <clipPath id="clip0_21_3">
-                  <rect width="684" height="97" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-          <p class="hero-tagline scroll-reveal" data-delay="200">
-            Where creativity meets code.
-          </p>
-          <div class="scroll-hint scroll-reveal" data-delay="400">
-            <span>Scroll to explore</span>
-            <div class="scroll-mouse">
-              <div class="scroll-wheel"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="projects-grid" id="projects-container">
+      <!-- filled by js -->
+    </div>
+  </section>
 
-    <!-- Philosophy Section - Cinematic Scroll -->
-    <section id="philosophy" class="snap-section philosophy-section">
-      <div class="sticky-wrapper">
-        <div class="section-content">
-          <div class="philosophy-grid">
-            <div class="philosophy-card scroll-scale" data-index="0">
-              <div class="card-icon">
-                <i class="fa-solid fa-seedling"></i>
-              </div>
-              <h3>Our Origin</h3>
-              <p>Meraki Studios began as a group of friends, each with a unique talent. We united our skills into a
-                single studio, creating a space where we could collaborate and bring our most ambitious projects to
-                life.</p>
-            </div>
-            <div class="philosophy-card scroll-scale" data-index="1">
-              <div class="card-icon">
-                <i class="fa-solid fa-heart"></i>
-              </div>
-              <h3>Our Philosophy</h3>
-              <p>The name 'Meraki' is a Greek word that means to pour your soul, creativity, and love into your work.
-                It's our promise that every project is crafted with deep passion and a personal touch.</p>
-            </div>
-            <div class="philosophy-card scroll-scale" data-index="2">
-              <div class="card-icon">
-                <i class="fa-solid fa-rocket"></i>
-              </div>
-              <h3>Our Mission</h3>
-              <p>Our goal is to continuously grow and expand our creative horizons. From software and games to music and
-                animation, we aim to build extraordinary projects that showcase what we're truly capable of.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section id="team">
+    <h2 style="font-size: 50px; color: green; border-bottom: 10px dashed red;">Meet the Crew O_o</h2>
+    <div class="team-grid" id="team-container">
+      <!-- filled by js -->
+    </div>
+  </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="snap-section projects-section">
-      <div class="section-content">
-        <div class="section-header">
-          <span class="section-label scroll-reveal">Our Work</span>
-          <h2 class="scroll-reveal" data-delay="100">Projects</h2>
-          <p class="section-desc scroll-reveal" data-delay="200">Passion-driven creations that push boundaries.</p>
-        </div>
-        <div class="filter-bar scroll-reveal" data-delay="300">
-          <div class="filter-buttons">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-        <div class="projects-grid">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-    </section>
+  <footer style="background: black; color: lime; text-align: center; padding: 50px; font-family: 'Courier New', Courier, monospace; border-top: 20px solid red; font-size: 24px; font-weight: bold;">
+    <h3>meraki studios (c) 1999</h3>
+    <p>best viewed in internet explorer 6 at 800x600 resolution</p>
+    <blink>UNDER CONSTRUCTION</blink>
+  </footer>
 
-    <!-- Team Section -->
-    <section id="team" class="snap-section team-section">
-      <div class="section-content">
-        <div class="section-header">
-          <span class="section-label scroll-reveal">The Crew</span>
-          <h2 class="scroll-reveal" data-delay="100">Meet the Team</h2>
-          <p class="section-desc scroll-reveal" data-delay="200">Creative minds united by a shared passion.</p>
-        </div>
-        <div class="team-grid">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="snap-section footer-section">
-      <div class="section-content">
-        <div class="footer-inner">
-          <div class="footer-brand scroll-reveal">
-            <img src="images/icon.png" alt="Meraki Studios" class="footer-logo" />
-            <p>Creating limitless possibilities.</p>
-          </div>
-          <div class="footer-links scroll-reveal" data-delay="100">
-            <h4>Find Us</h4>
-            <div class="platform-links">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-          <div class="footer-contact scroll-reveal" data-delay="200">
-            <h4>Get in Touch</h4>
-            <a href="mailto:contact@merakistudios.dev" class="contact-btn">
-              <i class="fa-solid fa-envelope"></i>
-              contact@merakistudios.dev
-            </a>
-          </div>
-        </div>
-        <div class="footer-bottom scroll-reveal" data-delay="300">
-          <p class="copyright">© <script>document.write(new Date().getFullYear())</script> Meraki Studios. All Rights Reserved.</p>
-        </div>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Bottom Tab Bar (Mobile) -->
-  <nav class="bottom-nav" aria-label="Mobile navigation">
-    <a href="#hero" class="active" data-section="hero">
-      <i class="fa-solid fa-house"></i>
-      <span>Studio</span>
-    </a>
-    <a href="#philosophy" data-section="philosophy">
-      <i class="fa-solid fa-heart"></i>
-      <span>About</span>
-    </a>
-    <a href="#projects" data-section="projects">
-      <i class="fa-solid fa-layer-group"></i>
-      <span>Projects</span>
-    </a>
-    <a href="#team" data-section="team">
-      <i class="fa-solid fa-users"></i>
-      <span>Team</span>
-    </a>
-  </nav>
-
-  <!-- Project Modal -->
-  <div id="project-modal" class="modal">
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Close modal">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <h2 id="modal-title"></h2>
-      <div id="modal-video"></div>
-      <div id="modal-gallery"></div>
-      <p id="modal-description"></p>
-      <div id="modal-links"></div>
+  <!-- Modal -->
+  <div id="goofy-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,255,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter: blur(10px);">
+    <div style="background:yellow; border:10px dashed red; padding:30px; border-radius:30%; text-align:center; width:90%; max-width:600px; transform:rotate(-3deg); box-shadow: 20px 20px 0px magenta; transition: all 0.3s; cursor: default;">
+      <h2 id="modal-title" style="font-size:50px; margin:0;">TITLE</h2>
+      <img id="modal-img" src="" style="max-height: 250px; max-width: 100%; border:8px solid lime; border-radius:50%; margin:20px 0;">
+      <p id="modal-desc" style="font-size:24px; font-weight:bold;"></p>
+      <button onclick="closeModal()" style="font-size:30px; background:black; color:white; cursor:crosshair; padding:15px; border:5px outset gray;">MAKE IT GO AWAY</button>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="scripts/config.js" defer></script>
-  <script src="scripts/voronoi.js" defer></script>
-  <script src="scripts/main.js" defer></script>
+  <script>
+    const configData = {
+      philosophy: [
+        { title: "Our Origin", desc: "Meraki Studios began as a group of friends... wait no, we were just bored and wanted to make cool stuff." },
+        { title: "Our Philosophy", desc: "Meraki is Greek for 'putting your soul into it'. We put our souls and a lot of spaghetti code into this." },
+        { title: "Our Mission", desc: "Make stuff that works. Sometimes. Mostly." }
+      ],
+      projects: [
+        { id: "wc", title: "WorldChatter", desc: "A chat thingy for Minecraft. Very chat. Much world.", img: "images/wclogo.png", tags: ["mc"] },
+        { id: "hib", title: "Hibernation", desc: "Zzzzzzzzz... Makes the server sleep so planet Earth doesn't melt.", img: "images/hibernation.png", tags: ["mc", "tool"] },
+        { id: "gem", title: "GeminiCraft", desc: "Robots in block game basically.", img: "images/gclogo.png", tags: ["mc"] },
+        { id: "pav", title: "PebbleAntiVPN", desc: "Stops the bad guys. pew pew.", img: "images/pavbg.png", tags: ["tool"] },
+        { id: "liars", title: "Liar's Table", desc: "Cards but in Minecraft. I'm not lying.", img: "images/icon.png", tags: ["mc"] }
+      ],
+      team: [
+        { name: "Abdelaziz", role: "Java Guy (Dreams in errors)", img: "images/abdelazizpic.jpg" },
+        { name: "Omar", role: "Boss Man", img: "images/omarpic.png" },
+        { name: "Ghost", role: "Spooky Music Maker", img: "images/ghostpic.jpg" },
+        { name: "Saphielle", role: "Draws Stuff Good", img: "images/saphiellepic.jpg" },
+        { name: "Amezz", role: "Also Draws Stuff", img: "images/amezzpic.jpg" },
+        { name: "Yacu", role: "Make 2D into 3D", img: "images/Yacupfp.png" }
+      ]
+    };
+
+    // 1. Initial Renders
+    document.getElementById('philo-container').innerHTML = configData.philosophy.map(p => 
+      `<div class="scroll-reveal" style="opacity: 0; transform: translateY(100px); transition: all 0.5s;"><h3 style="font-size: 28px;">${p.title}</h3><p style="font-size: 20px;">${p.desc}</p></div>`
+    ).join('');
+
+    function renderProjects(filter = "all") {
+      const container = document.getElementById('projects-container');
+      container.innerHTML = configData.projects
+        .filter(p => filter === "all" || p.tags.includes(filter))
+        .map(p => 
+        `<div class="project-card scroll-reveal" style="opacity: 0; transform: scale(0.1); transition: all 0.5s;" onclick="openModal('${p.id}')">
+          <h3>${p.title}</h3>
+          <img src="${p.img}" alt="${p.title}" style="max-height: 150px; border: 5px solid yellow; background: black;">
+          <p style="font-weight: bold;">${p.desc}</p>
+          <button style="background: magenta; color: white; padding: 10px; font-size: 18px; border: 3px solid black; cursor: crosshair;">LEARN MORE!</button>
+        </div>`
+      ).join('');
+      // Trigger reveal immediately for new items
+      setTimeout(checkScrollReveal, 50);
+    }
+    renderProjects();
+
+    document.getElementById('team-container').innerHTML = configData.team.map(t => 
+      `<div class="team-card scroll-reveal" style="opacity: 0; transform: rotate(180deg); transition: all 0.8s;">
+        <img src="${t.img}" alt="${t.name}" class="team-avatar">
+        <h3 style="margin-bottom: 5px;">${t.name}</h3>
+        <p style="margin-top: 0;"><i>${t.role}</i></p>
+      </div>`
+    ).join('');
+
+    // --- JS LOGIC LIKE INDEX.HTML ---
+
+    // 2. Navigation Highlighting and Smooth Scroll
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if(target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop;
+        const height = sec.offsetHeight;
+        if (scrollY >= top - height / 3) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.backgroundColor = 'yellow'; // default
+        link.style.color = 'red';
+        if (link.getAttribute('href').includes(current)) {
+          link.style.backgroundColor = 'cyan';
+          link.style.color = 'magenta';
+          link.style.transform = 'scale(1.3) rotate(-5deg)'; // Active state style!
+        } else {
+          link.style.transform = '';
+        }
+      });
+    });
+
+    // 3. Scroll Reveal Animations
+    function checkScrollReveal() {
+      const reveals = document.querySelectorAll('.scroll-reveal');
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 50) {
+          el.style.opacity = '1';
+          el.style.transform = 'none'; // clears the weird transforms configued earlier
+        }
+      });
+    }
+    window.addEventListener('scroll', checkScrollReveal);
+    checkScrollReveal(); // Check on load
+
+    // 4. Project Filter Logic
+    document.querySelectorAll('.goofy-filter').forEach(btn => {
+      btn.addEventListener('click', e => {
+        // Reset styles and active classes
+        document.querySelectorAll('.goofy-filter').forEach(b => {
+           b.classList.remove('active');
+           b.style.transform = '';
+           b.style.boxShadow = '';
+        });
+        // Activate clicked
+        const clicked = e.target;
+        clicked.classList.add('active');
+        clicked.style.transform = 'scale(1.2) rotate(5deg)';
+        clicked.style.boxShadow = '5px 5px 0px black';
+        const filter = clicked.getAttribute('data-filter');
+        renderProjects(filter);
+      });
+    });
+
+    // Default activate "ALL"
+    document.querySelector('.goofy-filter[data-filter="all"]').click();
+
+    // 5. Modal Logic
+    const modal = document.getElementById('goofy-modal');
+    function openModal(id) {
+      const proj = configData.projects.find(p => p.id === id);
+      if(!proj) return;
+      document.getElementById('modal-title').textContent = proj.title;
+      document.getElementById('modal-desc').textContent = proj.desc;
+      document.getElementById('modal-img').src = proj.img;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      // Animate modal entry
+      const modalBox = modal.children[0];
+      modalBox.style.transform = 'scale(0.1) rotate(180deg)';
+      setTimeout(() => {
+         modalBox.style.transform = 'scale(1) rotate(-3deg)';
+      }, 50);
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    // Modal click out to close
+    modal.addEventListener('click', e => {
+      if(e.target === modal) closeModal();
+    });
+
+    // 6. Random silly background jittering & stuff
+    console.log("%c PLS NO HAXX ", "background: red; color: yellow; font-size: 40px");
+    setInterval(() => {
+      document.body.style.backgroundPosition = `${Math.random() * 10}px ${Math.random() * 10}px`;
+    }, 200);
+
+  </script>
 </body>
-
 </html>
