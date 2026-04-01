@@ -80,64 +80,6 @@ const SITE_CONFIG = {
       },
     },
     {
-      id: "hibernation",
-      title: "MC - Hibernation System",
-      shortDescription:
-        "The ultimate power-saving solution for Minecraft servers.",
-      fullDescription:
-        "MC - Hibernation System is the ultimate power-saving solution for Minecraft servers. Automatically put your server on sleep mode when it's empty and bring it back online the moment a player connects – all while using barely any RAM or CPU.",
-      tags: ["minecraft", "tool"],
-      image: "images/hibernation.png",
-      pageUrl: "projects/hibernation.html",
-      youtubeId: "",
-      galleryImages: ["images/bannerhibernation.png"],
-      links: [
-        {
-          text: "View on sourceXchange (Java)",
-          url: "https://www.sourcexchange.net/products/minecraft-java-hibernation-system",
-          style: "background: #b1b1b1; color: var(--bg-dark);",
-        },
-        {
-          text: "View on sourceXchange (Bedrock)",
-          url: "https://www.sourcexchange.net/products/minecraft-bedrock-hibernation-system",
-          style: "background: #b1b1b1; color: var(--bg-dark);",
-        },
-      ],
-      features: [
-        {
-          icon: "fa-solid fa-moon",
-          title: "Auto Sleep Mode",
-          description:
-            "Server automatically enters hibernation when no players are online.",
-        },
-        {
-          icon: "fa-solid fa-bolt",
-          title: "Instant Wake-Up",
-          description:
-            "Bring your server back online the moment a player connects.",
-        },
-        {
-          icon: "fa-solid fa-microchip",
-          title: "Minimal Resources",
-          description: "Uses barely any RAM or CPU while in hibernation mode.",
-        },
-        {
-          icon: "fa-solid fa-server",
-          title: "Multi-Platform",
-          description:
-            "Available for both Java and Bedrock Minecraft server editions.",
-        },
-      ],
-      theme: {
-        background: "#e7e7e72c",
-        borderColor: "#e7e7e7",
-        titleColor: "#ffffff",
-        buttonBg: "#b1b1b1",
-        buttonColor: "var(--bg-dark)",
-        buttonHoverShadow: "#b1b1b1",
-      },
-    },
-    {
       id: "geminicraft",
       title: "GeminiCraft",
       shortDescription:
@@ -189,59 +131,6 @@ const SITE_CONFIG = {
         buttonBg: "#8ab4f8",
         buttonColor: "var(--bg-dark)",
         buttonHoverShadow: "#8ab4f8",
-      },
-    },
-    {
-      id: "pebbleantivpn",
-      title: "PebbleAntiVPN",
-      shortDescription:
-        "A powerful, free anti-VPN tool built to protect your server.",
-      fullDescription:
-        "A powerful, free anti-VPN tool built to protect your server. It blocks connections from proxies and VPNs, and even lets you restrict access by country. Our API is fast, reliable, and easy to integrate, ensuring your server remains safe from malicious actors.",
-      tags: ["website", "tool", "minecraft"],
-      image: "images/pavbg.png",
-      pageUrl: "projects/pebbleantivpn.html",
-      youtubeId: "",
-      galleryImages: ["images/pavbg.png"],
-      links: [
-        {
-          text: "Visit Website",
-          url: "https://pav.merakistudios.dev/",
-          style: "background: #f3732f; color: var(--text-color);",
-        },
-      ],
-      features: [
-        {
-          icon: "fa-solid fa-shield-halved",
-          title: "VPN & Proxy Blocking",
-          description:
-            "Block connections from proxies and VPNs to protect your server.",
-        },
-        {
-          icon: "fa-solid fa-earth-americas",
-          title: "Country Restriction",
-          description:
-            "Restrict access by country for additional security control.",
-        },
-        {
-          icon: "fa-solid fa-gauge-high",
-          title: "Fast API",
-          description: "Lightning-fast, reliable API for seamless integration.",
-        },
-        {
-          icon: "fa-solid fa-lock",
-          title: "Free & Open",
-          description:
-            "A powerful security tool that's completely free to use.",
-        },
-      ],
-      theme: {
-        background: "#f3732f2c",
-        borderColor: "#f3732f",
-        titleColor: "#f3732f",
-        buttonBg: "#f3732f",
-        buttonColor: "var(--text-color)",
-        buttonHoverShadow: "#f3732f",
       },
     },
     {
