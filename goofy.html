@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meraki Studios...</title>
+  <style>
+    /* intentionally bad and goofy CSS */
+    body {
+      font-family: "Comic Sans MS", "Chalkboard SE", sans-serif;
+      background-color: #f0f8ff;
+      background-image: repeating-linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow), repeating-linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    .header-goofy {
+      background: pink;
+      border: 5px dashed limegreen;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transform: rotate(-2deg);
+      box-shadow: 10px 10px 0px blue;
+      margin-bottom: 50px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: red;
+      text-decoration: underline overline;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: yellow;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      padding: 10px;
+      transition: all 0.1s;
+      display: inline-block;
+      border: 3px solid black;
+    }
+
+    .nav-links a:hover {
+      transform: scale(1.5) rotate(10deg);
+      background-color: cyan;
+      color: magenta;
+    }
+
+    section {
+      margin: 50px auto;
+      padding: 20px;
+      max-width: 900px;
+      background: white;
+      border: 8px solid black;
+      border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* goofy hand-drawn border */
+      box-shadow: 15px 15px 0px rgba(0,0,0,0.5);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      background: #ffaa00;
+      color: blue;
+      transform: rotate(1deg);
+    }
+    .hero h1 {
+      font-size: 80px;
+      text-shadow: 5px 5px 0px red;
+      margin: 0;
+      animation: rainbow 2s infinite;
+    }
+    
+    @keyframes rainbow {
+      0% { color: red; }
+      20% { color: orange; }
+      40% { color: yellow; }
+      60% { color: green; }
+      80% { color: blue; }
+      100% { color: red; }
+    }
+
+    .hero-img {
+      width: 300px;
+      border: 10px dotted purple;
+      border-radius: 50%;
+      animation: spinny 5s linear infinite;
+      margin: 20px 0;
+    }
+    @keyframes spinny { 100% { transform: rotate(360deg); } }
+
+    /* Philosophy */
+    .philosophy-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .philosophy-grid > div {
+      background: cyan;
+      border: 4px dashed magenta;
+      padding: 15px;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      transition: transform 0.2s;
+    }
+    .philosophy-grid > div:hover {
+      transform: skewX(-15deg);
+      background-color: pink;
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .project-card {
+      border: 6px double black;
+      padding: 15px;
+      text-align: center;
+    }
+    .project-card:nth-child(odd) {
+      transform: rotate(-3deg);
+      background: #ffb6c1;
+    }
+    .project-card:nth-child(even) {
+      transform: rotate(4deg);
+      background: #98fb98;
+    }
+    .project-card h3 {
+      color: blue;
+      font-size: 30px;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-top: 0;
+    }
+
+    /* Team */
+    .team-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .team-card {
+      background: yellow;
+      border: 4px solid black;
+      width: 200px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 10px 10px 0px gray;
+      border-radius: 10px;
+    }
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 10%;
+      object-fit: cover;
+      filter: sepia(100%) saturate(300%) hue-rotate(90deg);
+      border: 5px ridge pink;
+    }
+
+    marquee {
+      font-size: 40px;
+      font-weight: bold;
+      color: white;
+      background: red;
+      padding: 10px;
+      border: 3px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-goofy">
+    <marquee scrollamount="25">WELCOME TO MERAKI STUDIOS (THE REALLY GOOD VERSION) 🚀 WOW SUCH DESIGN 🐶</marquee>
+    <nav class="nav-links">
+      <a href="#hero">STUDIO??</a>
+      <a href="#philosophy">ABOUT US!!</a>
+      <a href="#projects">COOL STUFF</a>
+      <a href="#team">THE GANG</a>
+    </nav>
+  </div>
+
+  <a href="index.html" style="position: fixed; top: 110px; right: 20px; z-index: 1001; background: red; color: yellow; border: 5px dotted blue; font-size: 24px; font-weight: bold; padding: 15px; cursor: pointer; text-decoration: none; transform: rotate(15deg); box-shadow: 5px 5px 0px black; transition: transform 0.1s;">🚨 BACK TO NORMAL 🚨</a>
+
+  <section id="hero" class="hero">
+    <h1>mEraKi StUdiOs</h1>
+    <img src="images/LargeLogoNoBG.png" alt="logo" class="hero-img">
+    <h2>Where crayons meet code!!!!!</h2>
+    <p>WE ARE A BUNCH OF NERDS!! XD</p>
+    <button onclick="alert('U CLICKED IT!! HERE HAVE A COOKIE 🍪')" style="font-size: 30px; font-weight: bold; background: lime; color: red; border: 10px outset orange; cursor: crosshair; padding: 20px; border-radius: 50%;">SCROLL DOWN (or click me)</button>
+  </section>
+
+  <section id="philosophy">
+    <h2 style="font-size: 50px; text-decoration: underline wavy blue;"><strike>Our Philosophy</strike> Why we do things</h2>
+    <div class="philosophy-grid" id="philo-container">
+      <!-- filled by js -->
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 style="font-size: 50px; color: purple; text-shadow: 2px 2px 0px yellow;">Look at these Projects ^_^</h2>
+    
+    <!-- Goofy Filters! -->
+    <div id="filter-bar" style="text-align:center; margin-bottom: 30px;">
+      <button class="goofy-filter active" data-filter="all" style="background:cyan; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">ALL STUFF</button>
+      <button class="goofy-filter" data-filter="mc" style="background:lime; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">MINECRAFT</button>
+      <button class="goofy-filter" data-filter="tool" style="background:pink; border:3px solid black; font-size:20px; font-weight:bold; cursor:pointer;">TOOLS</button>
+    </div>
+
+    <div class="projects-grid" id="projects-container">
+      <!-- filled by js -->
+    </div>
+  </section>
+
+  <section id="team">
+    <h2 style="font-size: 50px; color: green; border-bottom: 10px dashed red;">Meet the Crew O_o</h2>
+    <div class="team-grid" id="team-container">
+      <!-- filled by js -->
+    </div>
+  </section>
+
+  <footer style="background: black; color: lime; text-align: center; padding: 50px; font-family: 'Courier New', Courier, monospace; border-top: 20px solid red; font-size: 24px; font-weight: bold;">
+    <h3>meraki studios (c) 1999</h3>
+    <p>best viewed in internet explorer 6 at 800x600 resolution</p>
+    <blink>UNDER CONSTRUCTION</blink>
+  </footer>
+
+  <!-- Modal -->
+  <div id="goofy-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,255,0.5); z-index:9999; align-items:center; justify-content:center; backdrop-filter: blur(10px);">
+    <div style="background:yellow; border:10px dashed red; padding:30px; border-radius:30%; text-align:center; width:90%; max-width:600px; transform:rotate(-3deg); box-shadow: 20px 20px 0px magenta; transition: all 0.3s; cursor: default;">
+      <h2 id="modal-title" style="font-size:50px; margin:0;">TITLE</h2>
+      <img id="modal-img" src="" style="max-height: 250px; max-width: 100%; border:8px solid lime; border-radius:50%; margin:20px 0;">
+      <p id="modal-desc" style="font-size:24px; font-weight:bold;"></p>
+      <button onclick="closeModal()" style="font-size:30px; background:black; color:white; cursor:crosshair; padding:15px; border:5px outset gray;">MAKE IT GO AWAY</button>
+    </div>
+  </div>
+
+  <script>
+    const configData = {
+      philosophy: [
+        { title: "Our Origin", desc: "Meraki Studios began as a group of friends... wait no, we were just bored and wanted to make cool stuff." },
+        { title: "Our Philosophy", desc: "Meraki is Greek for 'putting your soul into it'. We put our souls and a lot of spaghetti code into this." },
+        { title: "Our Mission", desc: "Make stuff that works. Sometimes. Mostly." }
+      ],
+      projects: [
+        { id: "wc", title: "WorldChatter", desc: "A chat thingy for Minecraft. Very chat. Much world.", img: "images/wclogo.png", tags: ["mc"] },
+        { id: "gem", title: "GeminiCraft", desc: "Robots in block game basically.", img: "images/gclogo.png", tags: ["mc"] },
+        { id: "liars", title: "Liar's Table", desc: "Cards but in Minecraft. I'm not lying.", img: "images/icon.png", tags: ["mc"] }
+      ],
+      team: [
+        { name: "Abdelaziz", role: "Java Guy (Dreams in errors)", img: "images/abdelazizpic.jpg" },
+        { name: "Omar", role: "Boss Man", img: "images/omarpic.png" },
+        { name: "Ghost", role: "Spooky Music Maker", img: "images/ghostpic.jpg" },
+        { name: "Saphielle", role: "Draws Stuff Good", img: "images/saphiellepic.jpg" },
+        { name: "Amezz", role: "Also Draws Stuff", img: "images/amezzpic.jpg" },
+        { name: "Yacu", role: "Make 2D into 3D", img: "images/Yacupfp.png" },
+        { name: "Youssef7Y", role: "Story Producer (idk what he does but he's good at it)", img: "images/yosifepic.png" }
+      ]
+    };
+
+    // 1. Initial Renders
+    document.getElementById('philo-container').innerHTML = configData.philosophy.map(p => 
+      `<div class="scroll-reveal" style="opacity: 0; transform: translateY(100px); transition: all 0.5s;"><h3 style="font-size: 28px;">${p.title}</h3><p style="font-size: 20px;">${p.desc}</p></div>`
+    ).join('');
+
+    function renderProjects(filter = "all") {
+      const container = document.getElementById('projects-container');
+      container.innerHTML = configData.projects
+        .filter(p => filter === "all" || p.tags.includes(filter))
+        .map(p => 
+        `<div class="project-card scroll-reveal" style="opacity: 0; transform: scale(0.1); transition: all 0.5s;" onclick="openModal('${p.id}')">
+          <h3>${p.title}</h3>
+          <img src="${p.img}" alt="${p.title}" style="max-height: 150px; border: 5px solid yellow; background: black;">
+          <p style="font-weight: bold;">${p.desc}</p>
+          <button style="background: magenta; color: white; padding: 10px; font-size: 18px; border: 3px solid black; cursor: crosshair;">LEARN MORE!</button>
+        </div>`
+      ).join('');
+      setTimeout(checkScrollReveal, 50);
+    }
+    renderProjects();
+
+    document.getElementById('team-container').innerHTML = configData.team.map(t => {
+      const upworkLink = t.social?.find(s => s.platform === 'upwork');
+      const upworkBadge = upworkLink
+        ? `<a href="${upworkLink.url}" target="_blank" style="display:inline-block; margin-top:8px; background:#14a800; color:white; font-size:14px; font-weight:bold; padding:5px 10px; border:3px solid black; border-radius:20px; text-decoration:none; transform:rotate(2deg); box-shadow:3px 3px 0px black; cursor:crosshair;">🟢 HIRE ON UPWORK!!</a>`
+        : '';
+      return `<div class="team-card scroll-reveal" style="opacity: 0; transform: rotate(180deg); transition: all 0.8s;">
+        <img src="${t.img}" alt="${t.name}" class="team-avatar">
+        <h3 style="margin-bottom: 5px;">${t.name}</h3>
+        <p style="margin-top: 0;"><i>${t.role}</i></p>
+        ${upworkBadge}
+      </div>`;
+    }).join('');
+
+    // --- JS LOGIC LIKE INDEX.HTML ---
+
+    // 2. Navigation Highlighting and Smooth Scroll
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').slice(1);
+        const target = document.getElementById(targetId);
+        if(target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop;
+        const height = sec.offsetHeight;
+        if (scrollY >= top - height / 3) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.backgroundColor = 'yellow';
+        link.style.color = 'red';
+        if (link.getAttribute('href').includes(current)) {
+          link.style.backgroundColor = 'cyan';
+          link.style.color = 'magenta';
+          link.style.transform = 'scale(1.3) rotate(-5deg)';
+        } else {
+          link.style.transform = '';
+        }
+      });
+    });
+
+    // 3. Scroll Reveal Animations
+    function checkScrollReveal() {
+      const reveals = document.querySelectorAll('.scroll-reveal');
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 50) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
+      });
+    }
+    window.addEventListener('scroll', checkScrollReveal);
+    checkScrollReveal();
+
+    // 4. Project Filter Logic
+    document.querySelectorAll('.goofy-filter').forEach(btn => {
+      btn.addEventListener('click', e => {
+        document.querySelectorAll('.goofy-filter').forEach(b => {
+           b.classList.remove('active');
+           b.style.transform = '';
+           b.style.boxShadow = '';
+        });
+        const clicked = e.target;
+        clicked.classList.add('active');
+        clicked.style.transform = 'scale(1.2) rotate(5deg)';
+        clicked.style.boxShadow = '5px 5px 0px black';
+        const filter = clicked.getAttribute('data-filter');
+        renderProjects(filter);
+      });
+    });
+
+    document.querySelector('.goofy-filter[data-filter="all"]').click();
+
+    // 5. Modal Logic
+    const modal = document.getElementById('goofy-modal');
+    function openModal(id) {
+      const proj = configData.projects.find(p => p.id === id);
+      if(!proj) return;
+      document.getElementById('modal-title').textContent = proj.title;
+      document.getElementById('modal-desc').textContent = proj.desc;
+      document.getElementById('modal-img').src = proj.img;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      const modalBox = modal.children[0];
+      modalBox.style.transform = 'scale(0.1) rotate(180deg)';
+      setTimeout(() => {
+         modalBox.style.transform = 'scale(1) rotate(-3deg)';
+      }, 50);
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    modal.addEventListener('click', e => {
+      if(e.target === modal) closeModal();
+    });
+
+    // 6. Random silly background jittering & stuff
+    console.log("%c PLS NO HAXX ", "background: red; color: yellow; font-size: 40px");
+    setInterval(() => {
+      document.body.style.backgroundPosition = `${Math.random() * 10}px ${Math.random() * 10}px`;
+    }, 200);
+
+  </script>
+</body>
+</html>

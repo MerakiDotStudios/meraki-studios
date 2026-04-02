@@ -43,6 +43,7 @@
     renderContent();
     initProjectModal();
     initFilters();
+    initThemes();
   });
 
   function cacheDOM() {
@@ -59,6 +60,8 @@
     DOM.platformLinks = document.querySelector(".platform-links");
     DOM.bottomNav = document.querySelector(".bottom-nav");
     DOM.bottomNavLinks = document.querySelectorAll(".bottom-nav a");
+    DOM.themeToggleBtn = document.querySelector(".theme-toggle-btn");
+    DOM.themeDropdown = document.querySelector(".theme-dropdown");
   }
 
   // ===================================
@@ -537,6 +540,76 @@
         }
       });
     });
+  }
+
+  // ===================================
+  // THEMES
+  // ===================================
+
+  function initThemes() {
+    if (!DOM.themeDropdown || !DOM.themeToggleBtn) {
+      if (DOM.themeToggleBtn) {
+         DOM.themeToggleBtn.style.display = 'none'; // hide if no config
+      }
+      return;
+    }
+
+    const themes = SITE_CONFIG?.themes || [];
+    
+    if (themes.length === 0) {
+      DOM.themeDropdown.innerHTML = '<div class="theme-dropdown-empty">No themes available</div>';
+      return;
+    }
+
+    // Render themes
+    let html = '<div class="theme-dropdown-header">Available Themes</div>';
+    html += themes.map(theme => `
+      <a href="${theme.url}" class="theme-dropdown-item">
+        <div class="theme-item-icon">
+          <i class="${theme.icon}"></i>
+        </div>
+        <div class="theme-item-text">
+          <span class="theme-item-name">${theme.name}</span>
+          <span class="theme-item-desc" title="${theme.description}">${theme.description}</span>
+        </div>
+        <i class="fa-solid fa-chevron-right theme-arrow"></i>
+      </a>
+    `).join('');
+    
+    DOM.themeDropdown.innerHTML = html;
+
+    // Toggle dropdown
+    DOM.themeToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = DOM.themeDropdown.classList.contains('open');
+      
+      // Close other nav logic if open (like mobile nav)
+      if (DOM.nav && DOM.nav.dataset.visible === "true") {
+         DOM.nav.dataset.visible = "false";
+         if (DOM.navToggle) DOM.navToggle.classList.remove("active");
+      }
+      
+      DOM.themeDropdown.classList.toggle('open');
+      DOM.themeToggleBtn.classList.toggle('active');
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (DOM.themeDropdown.classList.contains('open') && !e.target.closest('.theme-switcher')) {
+        DOM.themeDropdown.classList.remove('open');
+        DOM.themeToggleBtn.classList.remove('active');
+      }
+    });
+
+    // Close on scroll
+    if (DOM.scrollContainer) {
+      DOM.scrollContainer.addEventListener('scroll', () => {
+         if (DOM.themeDropdown.classList.contains('open')) {
+            DOM.themeDropdown.classList.remove('open');
+            DOM.themeToggleBtn.classList.remove('active');
+         }
+      }, { passive: true });
+    }
   }
 
 })();

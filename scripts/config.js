@@ -425,6 +425,18 @@ const SITE_CONFIG = {
     }
   },
 
+  // Themes - Add your custom site themes here
+  // Each theme needs: id, name, icon (FontAwesome class), url (link to theme page)
+  themes: [
+    {
+      id: "goofy",
+      name: "Goofy Mode",
+      icon: "fa-solid fa-face-grin-squint-tears",
+      url: "goofy.html",
+      description: "The chaotic, comic-sans masterpiece (April Fools 2026)",
+    }
+  ],
+
   // Header Social Links
   headerSocial: [
     {
