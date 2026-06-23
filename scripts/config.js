@@ -7,19 +7,19 @@ const SITE_CONFIG = {
 
   studioDetails: [
     {
-      title: "Our Origin",
+      title: "What We Are",
       description:
-        "Meraki Studios began as a group of friends, each with a unique talent. We decided to unite our skills into a single studio, creating a space where we could collaborate and bring our most ambitious projects to life.",
+        "Meraki Studios is a creative tech studio building games, tools, and eventually the engine underneath both. We started in Minecraft. We're not stopping there.",
     },
     {
       title: "Our Philosophy",
       description:
-        "The name 'Meraki' is a Greek word that means to pour your soul, creativity, and love into your work. It's our promise that every project is crafted with deep passion and a personal touch.",
+        "Meraki (μεράκι) — to pour your soul, creativity, and love into your work. We care too much about how things feel to take the easy route.",
     },
     {
-      title: "Our Mission",
+      title: "How We Build",
       description:
-        "Our goal is to continuously grow and expand our creative horizons. From software and games to music and animation, we aim to build extraordinary projects that showcase what we're truly capable of.",
+        "We're not chasing trends. No borrowed engines, no bloated software that does everything poorly. We're building this studio from the ground up.",
     },
   ],
 
@@ -29,9 +29,9 @@ const SITE_CONFIG = {
       id: "worldchatter",
       title: "WorldChatter",
       shortDescription:
-        "A complete chat overhaul plugin that makes server communication smooth and easy.",
+        "Complete chat overhaul with anti-swear, ad-blocking, and custom channels",
       fullDescription:
-        "A complete chat overhaul plugin that makes server communication smooth and easy. It includes features like anti-swear filters, ad-blocking, and fully customizable chat channels—giving you full control over how players interact.",
+        "A complete chat overhaul plugin rebuilt from scratch that makes server communication smooth and easy. It includes features like anti-swear filters, ad-blocking, and fully customizable chat channels—giving you full control over how players interact.",
       tags: ["minecraft", "tool"],
       image: "images/wclogo.png",
       pageUrl: "projects/worldchatter.html",
@@ -83,9 +83,9 @@ const SITE_CONFIG = {
       id: "geminicraft",
       title: "GeminiCraft",
       shortDescription:
-        "Bring Google's powerful Gemini AI straight into your Minecraft server!",
+        "Google Gemini AI directly inside your Minecraft server chat",
       fullDescription:
-        "Bring Google's powerful Gemini AI straight into your Minecraft server! Let your players chat with a cutting-edge AI assistant directly through in-game chat. The setup is simple, and it offers a unique, interactive experience for any community.",
+        "Google's Gemini AI, living inside your Minecraft server. Let your players chat with a cutting-edge AI assistant directly through in-game chat. The setup is simple, and it offers a unique, interactive experience for any community.",
       tags: ["minecraft", "tool"],
       image: "images/gclogo.png",
       pageUrl: "projects/geminicraft.html",
@@ -101,7 +101,7 @@ const SITE_CONFIG = {
       features: [
         {
           icon: "fa-solid fa-robot",
-          title: "AI-Powered Chat",
+          title: "AI Assistant Chat",
           description:
             "Let players interact with Google's Gemini AI directly in-game.",
         },
@@ -137,9 +137,9 @@ const SITE_CONFIG = {
       id: "liars-table",
       title: "Liar's Table",
       shortDescription:
-        "A one-of-a-kind multiplayer card game crafted entirely within Minecraft.",
+        "A multiplayer card game crafted entirely inside Minecraft",
       fullDescription:
-        "A one-of-a-kind multiplayer card game crafted entirely within Minecraft. Engage in a high-stakes battle of wits, bluffs, and bold moves, all powered by creative gameplay design. This project is currently in active development, and we're excited to share more soon!",
+        "A one-of-a-kind multiplayer card game crafted entirely inside Minecraft. Engage in a high-stakes battle of wits, bluffs, and bold moves, all powered by creative gameplay design. This project is currently in active development, and we're excited to share more soon!",
       tags: ["game", "minecraft"],
       image: null,
       icon: "fa-solid fa-user-secret",
@@ -195,7 +195,7 @@ const SITE_CONFIG = {
   team: [
     {
       name: "Abdelaziz Hasaneen",
-      role: "Co-Founder of Meraki Studios",
+      role: "Co-Founder — Java Developer",
       bio: '"Loves Java so much he dreams in stack traces." says he',
       image: "images/abdelazizpic.jpg",
       note: "A Java enthusiast.",
@@ -214,7 +214,7 @@ const SITE_CONFIG = {
     },
     {
       name: "Omar Mohamed",
-      role: "Founder of Meraki Studios",
+      role: "Founder — Unreal Gamedev, Video Editor & UI Designer",
       bio: "I'm proud to have founded Meraki Studios, a hub for creativity that began as a dream between friends. Our name, 'Meraki', means to put your soul into your work, and that is our promise.",
       image: "images/omarpic.png",
       note: "Unreal Gamedev, Video Editor, and UI Designer",
@@ -238,7 +238,7 @@ const SITE_CONFIG = {
     },
     {
       name: "Ghost",
-      role: "Founder of Meraki Studios",
+      role: "Founder — Music Producer",
       bio: "Mixing pixels and beats since deadlines became a personality trait.",
       image: "images/ghostpic.jpg",
       note: "A Music Producer", // Added note
@@ -275,7 +275,7 @@ const SITE_CONFIG = {
     },
     {
       name: "Amezz",
-      role: "Designer / Story Prod.",
+      role: "Designer & Story Producer",
       bio: "I draw things.",
       image: "images/amezzpic.jpg",
       social: [],
@@ -400,10 +400,7 @@ const SITE_CONFIG = {
     { id: "all", label: "Show All" },
     { id: "minecraft", label: "Minecraft" },
     { id: "game", label: "Game" },
-    { id: "website", label: "Website" },
     { id: "tool", label: "Tool" },
-    { id: "sdg", label: "SDG" },
-    { id: "software", label: "Software" },
   ],
 
   // Footer Configuration
