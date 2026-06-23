@@ -410,12 +410,7 @@ const SITE_CONFIG = {
         name: "Modrinth",
         url: "https://modrinth.com/organization/MerakiStudios",
         logo: "images/modrinth.png",
-      },
-      {
-        name: "SourceXchange",
-        url: "https://www.sourcexchange.net/teams/6157/profile",
-        logo: "images/sourcexchange.png",
-      },
+      }
     ],
     contact: {
       email: "contact@merakistudios.dev",
