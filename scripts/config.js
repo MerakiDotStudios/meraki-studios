@@ -356,7 +356,7 @@ const SITE_CONFIG = {
         },
         {
           platform: "Upwork",
-          url: "https://www.upwork.com/fre freelancers/~0124d7b34148cbd8e0",
+          url: "https://www.upwork.com/freelancers/~0124d7b34148cbd8e0",
           icon: "fa-brands fa-upwork",
         },
       ],
