@@ -195,19 +195,24 @@ const SITE_CONFIG = {
   team: [
     {
       name: "Abdelaziz Hasaneen",
-      role: "Co-Founder — Java Developer",
+      role: "Founder — Java Developer",
       bio: '"Loves Java so much he dreams in stack traces." says he',
       image: "images/abdelazizpic.jpg",
       note: "A Java enthusiast.",
       social: [
         {
-          platform: "github",
+          platform: "LinkedIn",
+          url: "https://www.linkedin.com/in/abdelaziz-hasaneen-a66a353a7/",
+          icon: "fab fa-linkedin",
+        },
+        {
+          platform: "Github",
           url: "https://github.com/Abdelaziz1586",
           icon: "fab fa-github",
         },
         {
           platform: "portfolio",
-          url: "https://abdelaziz1586.github.io/#projects",
+          url: "https://abdelaziz1586.github.io",
           icon: "fa-solid fa-globe",
         },
       ],
@@ -220,19 +225,34 @@ const SITE_CONFIG = {
       note: "Unreal Gamedev, Video Editor, and UI Designer",
       social: [
         {
-          platform: "linkedin",
+          platform: "LinkedIn",
           url: "https://www.linkedin.com/in/omardotcontent/",
           icon: "fab fa-linkedin",
         },
         {
-          platform: "youtube",
+          platform: "Youtube",
           url: "https://www.youtube.com/@OmarDotContent",
           icon: "fab fa-youtube",
         },
         {
-          platform: "github",
+          platform: "Instagram",
+          url: "https://www.instagram.com/omardotsocial/",
+          icon: "fab fa-instagram",
+        },
+        {
+          platform: "TikTok",
+          url: "https://www.tiktok.com/@omardotsocial",
+          icon: "fab fa-tiktok",
+        },
+        {
+          platform: "Github",
           url: "https://github.com/omardotcontent",
           icon: "fab fa-github",
+        },
+        {
+          platform: "portfolio",
+          url: "https://omardotcontent.github.io",
+          icon: "fa-solid fa-globe",
         },
       ],
     },
@@ -244,15 +264,25 @@ const SITE_CONFIG = {
       note: "A Music Producer", // Added note
       social: [
         {
-          platform: "github",
+          platform: "LinkedIn",
+          url: "https://www.linkedin.com/in/zeyad-yasser-172597380/",
+          icon: "fab fa-linkedin",
+        },
+        {
+          platform: "Youtube",
+          url: "https://www.youtube.com/@ghostmate114",
+          icon: "fab fa-youtube",
+        },
+        {
+          platform: "Github",
           url: "https://github.com/ZeyadYasser114",
           icon: "fab fa-github",
         },
         {
-          platform: "youtube",
-          url: "https://www.youtube.com/@ghostmate114",
-          icon: "fab fa-youtube",
-        },
+          platform: "Twitch",
+          url: "https://www.twitch.tv/theprodghost",
+          icon: "fab fa-twitch",
+        }
       ],
     },
     {
@@ -262,15 +292,30 @@ const SITE_CONFIG = {
       image: "images/saphiellepic.jpg",
       social: [
         {
-          platform: "instagram",
+          platform: "Instagram",
           url: "https://www.instagram.com/saphiellecodes/",
           icon: "fab fa-instagram",
         },
         {
-          platform: "tiktok",
+          platform: "TikTok",
           url: "https://www.tiktok.com/@saphiellecodes",
           icon: "fab fa-tiktok",
         },
+        {
+          platform: "Itch.io",
+          url: "https://saphiellecodes.itch.io",
+          icon: "fa-solid fa-gamepad",
+        },
+        {
+          platform: "Steam",
+          url: "https://store.steampowered.com/search/?developer=Saphielle",
+          icon: "fa-brands fa-steam",
+        },
+        {
+          platform: "Github",
+          url: "https://github.com/Saphiellecodes",
+          icon: "fa-brands fa-github",
+        }
       ],
     },
     {
@@ -285,7 +330,18 @@ const SITE_CONFIG = {
       role: "3D & 2D Artist",
       bio: '"It can never be perfect, but it can always be better"',
       image: "images/Yacupfp.png",
-      social: [],
+      social: [
+        {
+          platform: "VGen",
+          url: "https://vgen.co/Yacu",
+          icon: "fa-solid fa-gem",
+        },
+        {
+          platform: "X",
+          url: "https://x.com/YacuIsBack",
+          icon: "fa-brands fa-x-twitter",
+        }
+      ],
     },
     {
       name: "Youssef7Y",
@@ -294,104 +350,16 @@ const SITE_CONFIG = {
       image: "images/yosifepic.png",
       social: [
         {
-          platform: "upwork",
+          platform: "Youtube",
+          url: "https://www.youtube.com/@yosife7y",
+          icon: "fab fa-youtube",
+        },
+        {
+          platform: "Upwork",
           url: "https://www.upwork.com/fre freelancers/~0124d7b34148cbd8e0",
           icon: "fa-brands fa-upwork",
         },
       ],
-    },
-  ],
-
-  services: [
-    {
-      name: "Minecraft Plugin Development",
-      description:
-        "Customized Java plugins for BungeeCord, Paper, or Spigot servers. We create everything according to your server's requirements, from basic tools to complex gameplay mechanics.",
-      image: "images/services/minecraft.png",
-      tags: [
-        "Java",
-        "Development",
-        "Minecraft",
-        "Spigot",
-        "Paper",
-        "BungeeCord",
-      ],
-      availableMembers: ["Abdelaziz Hasaneen", "Omar Mohamed"],
-      isAvailable: true,
-      price: {
-        model: "dynamic", // Price varies based on complexity
-        type: "fixed",
-        minValue: 120,
-      },
-    },
-    {
-      name: "Custom Discord Bot",
-      description:
-        "Use a custom Discord bot to interact with your community. With a variety of features, we can develop utility bots, game integration bots, moderation bots, and more.",
-      image: "images/services/discord.png",
-      tags: ["Java", "Discord"],
-      availableMembers: ["Abdelaziz Hasaneen", "Omar Mohamed"],
-      isAvailable: true,
-      price: {
-        model: "dynamic", // Price varies based on complexity
-        type: "fixed",
-        minValue: 60,
-      },
-    },
-    {
-      name: "Digital/Traditional Art",
-      description:
-        "With a unique work of art from our creative studio, realize your vision. Our areas of expertise include producing tangible, traditional artworks as well as excellent digital illustrations.",
-      image: "images/services/art.png",
-      tags: ["Art", "Design"],
-      availableMembers: ["Amezz", "Himari"],
-      isAvailable: true,
-      price: {
-        model: "dynamic", // The price is exact
-        type: "fixed", // It's a one-time product cost
-        minValue: 50, // The exact cost is 50
-      },
-    },
-    {
-      name: "Games.",
-      description:
-        "We create worlds, not just games. Our studio is a collection of imaginative minds dedicated to creating original adventures, resolving intriguing riddles, and crafting unforgettable tales. Our goal is to produce top-notch games that inspire, challenge, and engage players worldwide.",
-      image: "images/services/games.png",
-      tags: ["Game Design", "Unity", "Unreal Engine", "Art", "Music"],
-      availableMembers: [
-        "Amezz",
-        "Ghost",
-        "Himari",
-        "Omar Mohamed",
-        "Saphielle",
-      ],
-      isAvailable: true,
-      price: {
-        model: "dynamic", // Price varies based on the project
-        type: "per_week",
-        minValue: 1000,
-      },
-    },
-    {
-      name: "Video Editing",
-      description:
-        "Excellent video editing for any project, including short films, promotional videos, social media clips, and YouTube content.",
-      image: "images/services/videos.png",
-      tags: [
-        "Video Editing",
-        "Premiere Pro",
-        "Post-Production",
-        "Content Creation",
-        "Graphic Design",
-        "Typography",
-      ],
-      availableMembers: ["Omar Mohamed"],
-      isAvailable: true,
-      price: {
-        model: "dynamic", // Price varies based on complexity
-        type: "fixed", // It's an hourly rate
-        minValue: 250,
-      },
     },
   ],
 
@@ -437,7 +405,7 @@ const SITE_CONFIG = {
       icon: "fab fa-tiktok",
     },
     {
-      platform: "GitHub",
+      platform: "Github",
       url: "https://github.com/MerakiDotStudios",
       icon: "fab fa-github",
     },
